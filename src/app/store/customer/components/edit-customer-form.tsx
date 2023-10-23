@@ -15,7 +15,7 @@ import { SelectForm } from './select-type';
 import { useLoading } from '@/components/admin/is-loading';
 import { toast } from '@/components/ui/use-toast';
 
-export function EditUserForm({
+export function EditCustomerForm({
   formData,
   setFormData,
   setUpdateData,
@@ -35,7 +35,7 @@ export function EditUserForm({
           : undefined;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${formData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/customer/${formData.id}`,
         {
           method: 'PATCH',
           body: JSON.stringify({
@@ -161,7 +161,7 @@ export function EditUserForm({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label
-              htmlFor="username"
+              htmlFor="customername"
               className="text-right"
             >
               Tipo

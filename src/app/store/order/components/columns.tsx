@@ -1,19 +1,19 @@
 'use client';
 
-import { User } from '@/types/user';
-
 import { ColumnDef } from '@tanstack/react-table';
 
 import React from 'react';
 import { Dropdown } from './dropdown';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
+import { Order } from '@/types/order';
+import { Badge } from '@/components/ui/badge';
 
 export function columns({
   setEditFormData,
   tableData,
   setTableData,
-}: any): ColumnDef<User>[] {
+}: any): ColumnDef<Order>[] {
   return [
     {
       accessorKey: '_id',
@@ -27,14 +27,14 @@ export function columns({
               )
             }
           >
-            ID
+            ID do pedido
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
     },
     {
-      accessorKey: 'name',
+      accessorKey: 'customerId.name',
       header: ({ column }) => {
         return (
           <Button
@@ -45,7 +45,7 @@ export function columns({
               )
             }
           >
-            Nome
+            Nome do cliente
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
@@ -53,13 +53,13 @@ export function columns({
       cell: ({ row }) => {
         return (
           <div className="text-start ml-4">
-            {row.getValue('name')}
+            {row.original?.customerId.name}
           </div>
         );
       },
     },
     {
-      accessorKey: 'email',
+      accessorKey: 'totalPrice',
       header: ({ column }) => {
         return (
           <Button
@@ -70,14 +70,21 @@ export function columns({
               )
             }
           >
-            Email
+            Valor total
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
+      cell: ({ row }) => {
+        return (
+          <div className="text-start ml-4">
+            {row.original?.totalPrice}
+          </div>
+        );
+      },
     },
     {
-      accessorKey: 'type',
+      accessorKey: 'status',
       header: ({ column }) => {
         return (
           <Button
@@ -88,31 +95,35 @@ export function columns({
               )
             }
           >
-            Tipo
+            Status
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => {
         const names: Record<string, string> = {
-          admin: 'Admin',
-          store_owner: 'Dono de loja',
+          created: 'Aguardando pagamento',
+          payed: 'Pago',
+          onWay: 'A Caminho',
+          delivered: 'Entregue',
         };
-        const item = row.getValue('type') as any;
+        const item = row.getValue('status') as any;
         const result = names[item] as any;
         return (
-          <div className="text-start ml-5">{result}</div>
+          <div className="text-start ml-6">
+            <Badge variant={'default'}>{result}</Badge>
+          </div>
         );
       },
     },
     {
       id: 'actions',
       cell: ({ row }) => {
-        const user = row.original;
+        const order = row.original;
 
         return (
           <Dropdown
-            user={user}
+            order={order}
             setEditFormData={setEditFormData}
             setTableData={setTableData}
             tableData={tableData}

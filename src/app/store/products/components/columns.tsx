@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@/types/user';
+import { Product } from '@/types/product';
 
 import { ColumnDef } from '@tanstack/react-table';
 
@@ -13,7 +13,7 @@ export function columns({
   setEditFormData,
   tableData,
   setTableData,
-}: any): ColumnDef<User>[] {
+}: any): ColumnDef<Product>[] {
   return [
     {
       accessorKey: '_id',
@@ -59,7 +59,7 @@ export function columns({
       },
     },
     {
-      accessorKey: 'email',
+      accessorKey: 'inStock',
       header: ({ column }) => {
         return (
           <Button
@@ -70,49 +70,52 @@ export function columns({
               )
             }
           >
-            Email
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-    },
-    {
-      accessorKey: 'type',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc',
-              )
-            }
-          >
-            Tipo
+            Quantidade em estoque
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => {
-        const names: Record<string, string> = {
-          admin: 'Admin',
-          store_owner: 'Dono de loja',
-        };
-        const item = row.getValue('type') as any;
-        const result = names[item] as any;
         return (
-          <div className="text-start ml-5">{result}</div>
+          <div className="text-start ml-24">
+            {row.getValue('inStock')}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'price',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(
+                column.getIsSorted() === 'asc',
+              )
+            }
+          >
+            Preço
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="text-start ml-5">
+            {`R$${row.getValue('price')}`}
+          </div>
         );
       },
     },
     {
       id: 'actions',
       cell: ({ row }) => {
-        const user = row.original;
+        const product = row.original;
 
         return (
           <Dropdown
-            user={user}
+            product={product}
             setEditFormData={setEditFormData}
             setTableData={setTableData}
             tableData={tableData}

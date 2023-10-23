@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { DataTable } from './components/data-table';
-import { User } from '@/types/user';
+import { Product } from '@/types/product';
 import { columns } from './components/columns';
 import 'dotenv/config';
 import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { CreateUserForm } from './components/create-user-form';
-import { EditUserForm } from './components/edit-user-form';
+import { CreateProductForm } from './components/create-product-form';
+import { EditProductForm } from './components/edit-product-form';
 import { create } from 'domain';
 
-export default function User() {
+export default function Product() {
   const [tableData, setTableData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -19,9 +19,12 @@ export default function User() {
   );
 
   const [editFormData, setEditFormData] = React.useState({
+    storeId: '',
     name: '',
-    email: '',
-    type: '',
+    description: '',
+    inStock: '',
+    image: '',
+    price: '',
   });
 
   React.useEffect(() => {
@@ -65,12 +68,12 @@ export default function User() {
         })}
         data={tableData}
       />
-      <CreateUserForm
+      <CreateProductForm
         tableData={tableData}
         setTableData={setTableData}
       />
       <div>
-        <EditUserForm
+        <EditProductForm
           formData={editFormData}
           setFormData={setEditFormData}
           setUpdateData={setUpdateData}

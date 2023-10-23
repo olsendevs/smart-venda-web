@@ -14,76 +14,46 @@ import { toast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 export function Dropdown({
-  user,
+  order,
   setEditFormData,
   tableData,
   setTableData,
 }: any) {
   const { setIsLoading } = useLoading();
-  async function deleteUser(id: any) {
-    setIsLoading(true);
-    setEditFormData({
-      name: '',
-      email: '',
-      type: '',
-    });
 
-    try {
-      const token = JSON.parse(
-        localStorage.getItem('user') || '',
-      ).accessToken;
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (
-        response.status === 500 ||
-        response.status === 400
-      ) {
-        toast({
-          title:
-            'Erro ao deletar usuário. Tente novamente.',
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      const tableDataWithoutDeleted = tableData.filter(
-        (x: any) => x._id != id,
-      );
-
-      setTableData(tableDataWithoutDeleted);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    setTimeout(() => {
-      toast({
-        title: 'Usuário deletado com sucesso!',
-        variant: 'destructive',
-      });
-      setIsLoading(false);
-    }, 300);
-    return;
-  }
-
-  function editUser(user: any) {
+  function editOrder(order: any) {
     setEditFormData(() => ({
-      name: user.name,
-      email: user.email,
-      type: user.type,
-      id: user._id,
+      _id: order._id,
+      items: order.items,
+      customerId: order.customerId,
+      storeId: order.storeId,
+      status: order.status,
+      totalPrice: order.totalPrice,
+      paymentType: order.paymentType,
     }));
 
     document.getElementById('open-edit-form')?.click();
 
     return;
   }
+
+  const handleUpdateStatus = (order: any) => {
+    setEditFormData(() => ({
+      _id: order._id,
+      items: order.items,
+      customerId: order.customerId,
+      storeId: order.storeId,
+      status: order.status,
+      totalPrice: order.totalPrice,
+      paymentType: order.paymentType,
+    }));
+
+    document
+      .getElementById('open-update-status-form')
+      ?.click();
+
+    return;
+  };
 
   return (
     <>
@@ -96,23 +66,21 @@ export function Dropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
-            Ações no usuário
+            Ações no pedido
           </DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() =>
-              navigator.clipboard.writeText(user.email)
-            }
+            onClick={() => {
+              editOrder(order);
+            }}
           >
-            Copiar e-mail
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => editUser(user)}>
-            Editar
+            Ver detalhes
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => deleteUser(user._id)}
+            onClick={() => {
+              handleUpdateStatus(order);
+            }}
           >
-            Deletar
+            Alterar Status
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

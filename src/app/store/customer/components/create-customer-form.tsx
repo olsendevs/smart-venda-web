@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/select';
 import React, { useState } from 'react';
 
-export function CreateUserForm({
+export function CreateCustomerForm({
   tableData,
   setTableData,
 }: any) {
@@ -67,11 +67,11 @@ export function CreateUserForm({
     setIsLoading(true);
     try {
       const token = JSON.parse(
-        localStorage.getItem('user') || '',
+        localStorage.getItem('customer') || '',
       ).accessToken;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/customer/`,
         {
           method: 'POST',
           body: JSON.stringify(data),
@@ -219,7 +219,7 @@ export function CreateUserForm({
                   render={({ field }) => (
                     <FormItem>
                       <Label
-                        htmlFor="username"
+                        htmlFor="customername"
                         className="text-right"
                       >
                         Tipo

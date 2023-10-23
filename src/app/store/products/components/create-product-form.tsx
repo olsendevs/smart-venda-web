@@ -25,33 +25,27 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select';
-import React, { useState } from 'react';
 
-export function CreateUserForm({
+import React, { useState } from 'react';
+import UploadZone from './upload-zone';
+import { v4 as uuidv4 } from 'uuid';
+export function CreateProductForm({
   tableData,
   setTableData,
 }: any) {
+  const [uploadedFile, setUploadedFile] = useState(null);
   const FormSchema = z.object({
     name: z.string({
       required_error: 'O nome é obrigatório',
     }),
-    email: z
-      .string({
-        required_error: 'O e-mail é obrigatório',
-      })
-      .email(),
-    password: z.string({
-      required_error: 'A senha é obrigatória',
+    description: z.string({
+      required_error: 'O descrição é obrigatória',
     }),
-    type: z.string({
-      required_error: 'O tipo é obrigatório',
+    inStock: z.string({
+      required_error: 'O estoque é obrigatório',
+    }),
+    price: z.string({
+      required_error: 'O preço é obrigatório',
     }),
   });
 
@@ -69,40 +63,69 @@ export function CreateUserForm({
       const token = JSON.parse(
         localStorage.getItem('user') || '',
       ).accessToken;
+      const image: any = uploadedFile;
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/`,
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+      console.log(image);
+
+      if (image) {
+        const formData = new FormData();
+
+        const uuid: string = uuidv4();
+
+        formData.append('file', image);
+
+        const imageResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/bucket`,
+          {
+            method: 'POST',
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      );
+        );
+        console.log(imageResponse.status);
+        if (imageResponse.status == 201) {
+          const imageUrl = await imageResponse.text();
 
-      const responseData = await response.json();
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/product/`,
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                ...data,
+                image: imageUrl,
+              }),
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            },
+          );
 
-      if (
-        response.status === 500 ||
-        response.status === 400
-      ) {
-        toast({
-          title:
-            'Erro ao adicionar usuário. Tente novamente.',
-          variant: 'destructive',
-          description: responseData.message,
-        });
-        return;
+          const responseData = await response.json();
+
+          if (
+            response.status === 500 ||
+            response.status === 400
+          ) {
+            toast({
+              title:
+                'Erro ao adicionar usuário. Tente novamente.',
+              variant: 'destructive',
+              description: responseData.message,
+            });
+            return;
+          }
+
+          setTableData([...tableData, responseData]);
+
+          toast({
+            title: 'Usuário adicionado com sucesso!',
+            variant: 'default',
+          });
+        }
       }
-
-      setTableData([...tableData, responseData]);
-
-      toast({
-        title: 'Usuário adicionado com sucesso!',
-        variant: 'default',
-      });
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -114,6 +137,7 @@ export function CreateUserForm({
 
     setTimeout(() => {
       form.reset();
+      setUploadedFile(null);
       setIsLoading(false);
     }, 300);
   }
@@ -131,7 +155,7 @@ export function CreateUserForm({
             className="w-auto max-w-none"
           >
             <SheetHeader>
-              <SheetTitle>Criar usuário</SheetTitle>
+              <SheetTitle>Criar produto</SheetTitle>
               <SheetDescription>
                 Inseria os dados e em seguida clique em
                 salvar.
@@ -165,22 +189,22 @@ export function CreateUserForm({
               <div className="grid grid-cols-1 items-center gap-4">
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
                       <Label
-                        htmlFor="email"
+                        htmlFor="text"
                         className="text-right"
                       >
-                        E-mail
+                        Descrição
                       </Label>
                       <Input
-                        id="email"
+                        id="text"
                         onChange={field.onChange}
                         defaultValue={field.value}
                         disabled={isLoading}
                         className="col-span-3"
-                        type="email"
+                        type="text"
                       />
                       <FormMessage />
                     </FormItem>
@@ -190,22 +214,22 @@ export function CreateUserForm({
               <div className="grid grid-cols-1 items-center gap-4">
                 <FormField
                   control={form.control}
-                  name="password"
+                  name="price"
                   render={({ field }) => (
                     <FormItem>
                       <Label
-                        htmlFor="password"
+                        htmlFor="price"
                         className="text-right"
                       >
-                        Senha
+                        Preço
                       </Label>
                       <Input
-                        id="password"
+                        id="price"
                         onChange={field.onChange}
                         defaultValue={field.value}
                         disabled={isLoading}
                         className="col-span-3"
-                        type="password"
+                        type="number"
                       />
                       <FormMessage />
                     </FormItem>
@@ -215,18 +239,22 @@ export function CreateUserForm({
               <div className="grid grid-cols-1 items-center gap-4">
                 <FormField
                   control={form.control}
-                  name="type"
+                  name="inStock"
                   render={({ field }) => (
                     <FormItem>
                       <Label
-                        htmlFor="username"
+                        htmlFor="inStock"
                         className="text-right"
                       >
-                        Tipo
+                        Estoque
                       </Label>
-                      <SelectForm
+                      <Input
+                        id="inStock"
                         onChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={isLoading}
+                        className="col-span-3"
+                        type="number"
                       />
                       <FormMessage />
                     </FormItem>
@@ -234,6 +262,11 @@ export function CreateUserForm({
                 />
               </div>
             </div>
+            <UploadZone
+              const
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+            />
 
             <SheetFooter>
               <Button

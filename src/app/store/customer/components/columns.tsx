@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@/types/user';
+import { Customer } from '@/types/customer';
 
 import { ColumnDef } from '@tanstack/react-table';
 
@@ -13,7 +13,7 @@ export function columns({
   setEditFormData,
   tableData,
   setTableData,
-}: any): ColumnDef<User>[] {
+}: any): ColumnDef<Customer>[] {
   return [
     {
       accessorKey: '_id',
@@ -77,7 +77,7 @@ export function columns({
       },
     },
     {
-      accessorKey: 'type',
+      accessorKey: 'whatsapp',
       header: ({ column }) => {
         return (
           <Button
@@ -88,31 +88,27 @@ export function columns({
               )
             }
           >
-            Tipo
+            WhatsApp
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
       },
       cell: ({ row }) => {
-        const names: Record<string, string> = {
-          admin: 'Admin',
-          store_owner: 'Dono de loja',
-        };
-        const item = row.getValue('type') as any;
-        const result = names[item] as any;
         return (
-          <div className="text-start ml-5">{result}</div>
+          <div className="text-start ml-4">
+            {row.getValue('whatsapp')}
+          </div>
         );
       },
     },
     {
       id: 'actions',
       cell: ({ row }) => {
-        const user = row.original;
+        const customer = row.original;
 
         return (
           <Dropdown
-            user={user}
+            customer={customer}
             setEditFormData={setEditFormData}
             setTableData={setTableData}
             tableData={tableData}

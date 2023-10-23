@@ -15,7 +15,7 @@ import { SelectForm } from './select-type';
 import { useLoading } from '@/components/admin/is-loading';
 import { toast } from '@/components/ui/use-toast';
 
-export function EditUserForm({
+export function EditProductForm({
   formData,
   setFormData,
   setUpdateData,
@@ -29,20 +29,17 @@ export function EditUserForm({
         localStorage.getItem('user') || '',
       ).accessToken;
 
-      const pass =
-        formData.password != null
-          ? formData.password
-          : undefined;
-
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${formData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${formData.id}`,
         {
           method: 'PATCH',
           body: JSON.stringify({
+            storeId: formData.storeId,
             name: formData.name,
-            email: formData.email,
-            type: formData.type,
-            password: pass,
+            description: formData.description,
+            inStock: formData.inStock,
+            image: formData.image,
+            price: formData.price,
           }),
           headers: {
             Authorization: `Bearer ${token}`,
@@ -106,77 +103,107 @@ export function EditUserForm({
               value={formData.name}
               onChange={(e) => {
                 setFormData({
+                  storeId: formData.storeId,
                   name: e.target.value,
-                  email: formData.email,
-                  type: formData.type,
-                  password: formData.password,
+                  description: formData.description,
+                  inStock: formData.inStock,
+                  image: formData.image,
+                  price: formData.price,
                   id: formData.id,
                 });
               }}
               className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({
-                  name: formData.name,
-                  email: e.target.value,
-                  type: formData.type,
-                  password: formData.password,
-                  id: formData.id,
-                });
-              }}
-              id="edit-email"
-              className="col-span-3"
-              type="email"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label
-              htmlFor="password"
+              htmlFor="description"
               className="text-right"
             >
-              Senha
+              Descrição
             </Label>
             <Input
-              value={formData.password}
+              value={formData.description}
               onChange={(e) => {
                 setFormData({
-                  id: formData.id,
+                  storeId: formData.storeId,
                   name: formData.name,
-                  email: formData.email,
-                  password: e.target.value,
-                  type: formData.type,
+                  description: e.target.value,
+                  inStock: formData.inStock,
+                  image: formData.image,
+                  price: formData.price,
+                  id: formData.id,
                 });
               }}
-              id="edit-password"
+              id="edit-description"
               className="col-span-3"
               type="text"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="username"
-              className="text-right"
-            >
-              Tipo
+            <Label htmlFor="inStock" className="text-right">
+              Em estoque
             </Label>
-            <SelectForm
-              value={formData.type}
-              onChange={(e: any) => {
+            <Input
+              value={formData.inStock}
+              onChange={(e) => {
                 setFormData({
-                  id: formData.id,
+                  storeId: formData.storeId,
                   name: formData.name,
-                  email: formData.email,
-                  password: formData.password,
-                  type: e,
+                  description: formData.description,
+                  inStock: e.target.value,
+                  image: formData.image,
+                  price: formData.price,
+                  id: formData.id,
                 });
               }}
+              id="edit-inStock"
+              className="col-span-3"
+              type="number"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="price" className="text-right">
+              Preço
+            </Label>
+            <Input
+              value={formData.price}
+              onChange={(e) => {
+                setFormData({
+                  storeId: formData.storeId,
+                  name: formData.name,
+                  description: formData.description,
+                  inStock: formData.inStock,
+                  image: formData.image,
+                  price: e.target.value,
+                  id: formData.id,
+                });
+              }}
+              id="edit-price"
+              className="col-span-3"
+              type="number"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right">
+              Link da imagem
+            </Label>
+            <Input
+              value={formData.image}
+              onChange={(e) => {
+                setFormData({
+                  storeId: formData.storeId,
+                  name: formData.name,
+                  description: formData.description,
+                  inStock: formData.inStock,
+                  image: e.target.value,
+                  price: formData.price,
+                  id: formData.id,
+                });
+              }}
+              id="edit-image"
+              className="col-span-3"
+              type="text"
             />
           </div>
         </div>

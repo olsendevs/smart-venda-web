@@ -2,15 +2,16 @@
 
 import React from 'react';
 import { DataTable } from './components/data-table';
-import { User } from '@/types/user';
+
 import { columns } from './components/columns';
 import 'dotenv/config';
 import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { CreateUserForm } from './components/create-user-form';
-import { EditUserForm } from './components/edit-user-form';
+import { UpdateOrderStatusForm } from './components/update-order-status-form';
+import { EditOrderForm } from './components/edit-order-form';
 import { create } from 'domain';
+import { Metrics } from './components/metrics';
 
-export default function User() {
+export default function Order() {
   const [tableData, setTableData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -19,9 +20,12 @@ export default function User() {
   );
 
   const [editFormData, setEditFormData] = React.useState({
-    name: '',
-    email: '',
-    type: '',
+    items: [],
+    customerId: '',
+    storeId: '',
+    status: '',
+    totalPrice: '',
+    paymentType: '',
   });
 
   React.useEffect(() => {
@@ -56,6 +60,7 @@ export default function User() {
   return (
     <main className="pt-20 pl-5">
       <h1 className="pb-2">Pedidos</h1>
+      <Metrics data={tableData} />
       <DataTable
         columns={columns({
           editFormData,
@@ -65,12 +70,13 @@ export default function User() {
         })}
         data={tableData}
       />
-      <CreateUserForm
-        tableData={tableData}
-        setTableData={setTableData}
+      <UpdateOrderStatusForm
+        formData={editFormData}
+        setFormData={setEditFormData}
+        setUpdateData={setUpdateData}
       />
       <div>
-        <EditUserForm
+        <EditOrderForm
           formData={editFormData}
           setFormData={setEditFormData}
           setUpdateData={setUpdateData}

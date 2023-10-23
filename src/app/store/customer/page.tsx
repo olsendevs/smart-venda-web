@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { DataTable } from './components/data-table';
-import { User } from '@/types/user';
+import { Customer } from '@/types/customer';
 import { columns } from './components/columns';
 import 'dotenv/config';
 import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { CreateUserForm } from './components/create-user-form';
-import { EditUserForm } from './components/edit-user-form';
+import { CreateCustomerForm } from './components/create-customer-form';
+import { EditCustomerForm } from './components/edit-customer-form';
 import { create } from 'domain';
 
-export default function User() {
+export default function Customer() {
   const [tableData, setTableData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -65,12 +65,12 @@ export default function User() {
         })}
         data={tableData}
       />
-      <CreateUserForm
+      <CreateCustomerForm
         tableData={tableData}
         setTableData={setTableData}
       />
       <div>
-        <EditUserForm
+        <EditCustomerForm
           formData={editFormData}
           setFormData={setEditFormData}
           setUpdateData={setUpdateData}

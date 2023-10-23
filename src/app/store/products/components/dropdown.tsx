@@ -14,18 +14,21 @@ import { toast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 export function Dropdown({
-  user,
+  product,
   setEditFormData,
   tableData,
   setTableData,
 }: any) {
   const { setIsLoading } = useLoading();
-  async function deleteUser(id: any) {
+  async function deleteProduct(id: any) {
     setIsLoading(true);
     setEditFormData({
+      storeId: '',
       name: '',
-      email: '',
-      type: '',
+      description: '',
+      inStock: '',
+      image: '',
+      price: '',
     });
 
     try {
@@ -33,7 +36,7 @@ export function Dropdown({
         localStorage.getItem('user') || '',
       ).accessToken;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -72,14 +75,18 @@ export function Dropdown({
     return;
   }
 
-  function editUser(user: any) {
+  function editProduct(product: any) {
     setEditFormData(() => ({
-      name: user.name,
-      email: user.email,
-      type: user.type,
-      id: user._id,
+      name: product.name,
+      storeId: product.storeId,
+      description: product.description,
+      inStock: product.inStock,
+      image: product.image,
+      price: product.price,
+      id: product._id,
     }));
 
+    console.log(product);
     document.getElementById('open-edit-form')?.click();
 
     return;
@@ -96,21 +103,15 @@ export function Dropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
-            Ações no usuário
+            Ações no produto
           </DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() =>
-              navigator.clipboard.writeText(user.email)
-            }
+            onClick={() => editProduct(product)}
           >
-            Copiar e-mail
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => editUser(user)}>
             Editar
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => deleteUser(user._id)}
+            onClick={() => deleteProduct(product._id)}
           >
             Deletar
           </DropdownMenuItem>

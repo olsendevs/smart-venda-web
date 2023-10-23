@@ -56,29 +56,19 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex items-center py-4">
-        <Button
-          className="mr-2"
-          onClick={() => {
-            document
-              .getElementById('open-create-form')
-              ?.click();
-          }}
-        >
-          Adicionar
-        </Button>
         <Input
-          placeholder="Pesquise por email..."
+          placeholder="Pesquise pelo ID do pedido..."
           value={
             (table
-              .getColumn('email')
+              .getColumn('_id')
               ?.getFilterValue() as string) ?? ''
           }
           onChange={(event) =>
             table
-              .getColumn('email')
+              .getColumn('_id')
               ?.setFilterValue(event.target.value)
           }
-          className="max-w-sm py-5 ml-auto"
+          className="max-w-sm py-5"
         />
       </div>
       <div className="rounded-md border">

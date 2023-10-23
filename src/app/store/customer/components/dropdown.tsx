@@ -14,13 +14,13 @@ import { toast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 export function Dropdown({
-  user,
+  customer,
   setEditFormData,
   tableData,
   setTableData,
 }: any) {
   const { setIsLoading } = useLoading();
-  async function deleteUser(id: any) {
+  async function deleteCustomer(id: any) {
     setIsLoading(true);
     setEditFormData({
       name: '',
@@ -30,10 +30,10 @@ export function Dropdown({
 
     try {
       const token = JSON.parse(
-        localStorage.getItem('user') || '',
+        localStorage.getItem('customer') || '',
       ).accessToken;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/customer/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -72,12 +72,12 @@ export function Dropdown({
     return;
   }
 
-  function editUser(user: any) {
+  function editCustomer(customer: any) {
     setEditFormData(() => ({
-      name: user.name,
-      email: user.email,
-      type: user.type,
-      id: user._id,
+      name: customer.name,
+      email: customer.email,
+      type: customer.type,
+      id: customer._id,
     }));
 
     document.getElementById('open-edit-form')?.click();
@@ -96,23 +96,23 @@ export function Dropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
-            Ações no usuário
+            Ações no cliente
           </DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() =>
-              navigator.clipboard.writeText(user.email)
+              navigator.clipboard.writeText(customer.email)
             }
           >
             Copiar e-mail
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => editUser(user)}>
-            Editar
-          </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => deleteUser(user._id)}
+            onClick={() =>
+              navigator.clipboard.writeText(
+                customer.whatsapp,
+              )
+            }
           >
-            Deletar
+            Copiar WhatsApp
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -15,10 +15,12 @@ export function SelectForm({ value, onChange }: any) {
         <SelectValue placeholder="Selecione" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="admin">Admin</SelectItem>
-        <SelectItem value="store_owner">
-          Dono de loja
+        <SelectItem value="created">
+          Aguardando pagamento
         </SelectItem>
+        <SelectItem value="payed">Pago</SelectItem>
+        <SelectItem value="onWay">A Caminho</SelectItem>
+        <SelectItem value="delivered">Entregue</SelectItem>
       </SelectContent>
     </Select>
   );

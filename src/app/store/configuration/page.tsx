@@ -1,49 +1,89 @@
 'use client';
 
 import React from 'react';
-import { DataTable } from './components/data-table';
-import { User } from '@/types/user';
-import { columns } from './components/columns';
+
 import 'dotenv/config';
 import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { CreateUserForm } from './components/create-user-form';
-import { EditUserForm } from './components/edit-user-form';
-import { create } from 'domain';
+import { Toaster } from '@/components/ui/toaster';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import Store from './components/store';
+import Integration from './components/integration';
 
-export default function User() {
-  const [tableData, setTableData] = React.useState([]);
+export default function Configurations() {
   const [isLoading, setIsLoading] = React.useState(false);
-
-  const [updateData, setUpdateData] = React.useState(
-    new Date(),
-  );
-
-  const [editFormData, setEditFormData] = React.useState({
-    name: '',
-    email: '',
-    type: '',
+  const [store, setStore] = React.useState({
+    name: undefined,
+    _id: undefined,
+    cnpj: undefined,
+    helpMessage: undefined,
+    payment: {
+      method: 'confirmation',
+      apiKey: '',
+    },
   });
-
   React.useEffect(() => {
     async function fetchData() {
+      setIsLoading(true);
       try {
-        const token = JSON.parse(
+        const user = JSON.parse(
           localStorage.getItem('user') || '',
-        ).accessToken;
+        );
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/user/`,
+          `${process.env.NEXT_PUBLIC_API_URL}/store/by-user`,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${user.accessToken}`,
             },
           },
         );
         const responseData = await response.json();
 
-        setTableData(responseData);
+        if (!responseData._id) {
+          const createdStore = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/store`,
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                name: ' ',
+                cnpj: ' ',
+                userId: user.id,
+                payment: {
+                  method: 'confirmation',
+                  apiKey: '',
+                },
+              }),
+              headers: {
+                Authorization: `Bearer ${user.accessToken}`,
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+          setStore(await createdStore.json());
+        } else {
+          setStore(responseData);
+        }
       } catch (error) {
         console.error('Error:', error);
-        setTableData([]);
       }
       setTimeout(() => {
         setIsLoading(false);
@@ -51,31 +91,16 @@ export default function User() {
     }
 
     fetchData();
-  }, [updateData]);
-
+  }, []);
   return (
-    <main className="pt-20 pl-5">
-      <h1 className="pb-2">Configurações</h1>
-      <DataTable
-        columns={columns({
-          editFormData,
-          setEditFormData,
-          tableData,
-          setTableData,
-        })}
-        data={tableData}
+    <main className="pt-20 pl-5 flex w-[55vw] mr-auto ml-auto">
+      <Store storeData={store} setStoreData={setStore} />
+
+      <Integration
+        storeData={store}
+        setStoreData={setStore}
       />
-      <CreateUserForm
-        tableData={tableData}
-        setTableData={setTableData}
-      />
-      <div>
-        <EditUserForm
-          formData={editFormData}
-          setFormData={setEditFormData}
-          setUpdateData={setUpdateData}
-        />
-      </div>
+
       <LoadingSpinner visible={isLoading} />
     </main>
   );
