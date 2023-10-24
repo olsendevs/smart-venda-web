@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@/types/order';
+import { User } from '@/types/user';
 
 import { ColumnDef } from '@tanstack/react-table';
 

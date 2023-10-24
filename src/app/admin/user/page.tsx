@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { DataTable } from './components/data-table';
-import { User } from '@/types/order';
+import { User } from '@/types/user';
 import { columns } from './components/columns';
 import 'dotenv/config';
 import { LoadingSpinner } from '@/components/admin/loading-spinner';
