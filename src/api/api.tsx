@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://74.235.186.233:3001',
+  //baseURL: 'http://74.235.186.233:3001',
+  baseURL: 'https://smartvenda.com.br/api',
 });
 
 axiosInstance.interceptors.request.use(
