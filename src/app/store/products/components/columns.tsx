@@ -16,7 +16,7 @@ export function columns({
 }: any): ColumnDef<Product>[] {
   return [
     {
-      accessorKey: '_id',
+      accessorKey: 'referenceId',
       header: ({ column }) => {
         return (
           <Button

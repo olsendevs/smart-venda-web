@@ -35,6 +35,7 @@ export function EditProductForm({
           method: 'PATCH',
           body: JSON.stringify({
             storeId: formData.storeId,
+            referenceId: formData.referenceId,
             name: formData.name,
             description: formData.description,
             inStock: formData.inStock,
@@ -106,6 +107,7 @@ export function EditProductForm({
                   storeId: formData.storeId,
                   name: e.target.value,
                   description: formData.description,
+                  referenceId: formData.referenceId,
                   inStock: formData.inStock,
                   image: formData.image,
                   price: formData.price,
@@ -131,6 +133,7 @@ export function EditProductForm({
                   description: e.target.value,
                   inStock: formData.inStock,
                   image: formData.image,
+                  referenceId: formData.referenceId,
                   price: formData.price,
                   id: formData.id,
                 });
@@ -151,6 +154,7 @@ export function EditProductForm({
                   storeId: formData.storeId,
                   name: formData.name,
                   description: formData.description,
+                  referenceId: formData.referenceId,
                   inStock: e.target.value,
                   image: formData.image,
                   price: formData.price,
@@ -173,6 +177,7 @@ export function EditProductForm({
                   storeId: formData.storeId,
                   name: formData.name,
                   description: formData.description,
+                  referenceId: formData.referenceId,
                   inStock: formData.inStock,
                   image: formData.image,
                   price: e.target.value,
@@ -186,6 +191,29 @@ export function EditProductForm({
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="image" className="text-right">
+              ID de referencia
+            </Label>
+            <Input
+              value={formData.referenceId}
+              onChange={(e) => {
+                setFormData({
+                  storeId: formData.storeId,
+                  name: formData.name,
+                  description: formData.description,
+                  referenceId: e.target.value,
+                  inStock: formData.inStock,
+                  image: formData.image,
+                  price: formData.price,
+                  id: formData.id,
+                });
+              }}
+              id="edit-image"
+              className="col-span-3"
+              type="text"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="image" className="text-right">
               Link da imagem
             </Label>
             <Input
@@ -195,6 +223,7 @@ export function EditProductForm({
                   storeId: formData.storeId,
                   name: formData.name,
                   description: formData.description,
+                  referenceId: formData.referenceId,
                   inStock: formData.inStock,
                   image: e.target.value,
                   price: formData.price,

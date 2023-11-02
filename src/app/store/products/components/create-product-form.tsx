@@ -38,6 +38,9 @@ export function CreateProductForm({
     name: z.string({
       required_error: 'O nome é obrigatório',
     }),
+    referenceId: z.string({
+      required_error: 'O ID de referencia é obrigatório',
+    }),
     description: z.string({
       required_error: 'O descrição é obrigatória',
     }),
@@ -255,6 +258,30 @@ export function CreateProductForm({
                         disabled={isLoading}
                         className="col-span-3"
                         type="number"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 items-center gap-4">
+                <FormField
+                  control={form.control}
+                  name="referenceId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label
+                        htmlFor="referenceId"
+                        className="text-right"
+                      >
+                        ID de referencia*
+                      </Label>
+                      <Input
+                        id="referenceId"
+                        onChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={isLoading}
+                        className="col-span-3"
                       />
                       <FormMessage />
                     </FormItem>

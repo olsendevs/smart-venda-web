@@ -20,6 +20,7 @@ export default function Product() {
 
   const [editFormData, setEditFormData] = React.useState({
     storeId: '',
+    referenceId: '',
     name: '',
     description: '',
     inStock: '',

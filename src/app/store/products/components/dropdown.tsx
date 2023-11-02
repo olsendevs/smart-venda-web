@@ -80,6 +80,7 @@ export function Dropdown({
       name: product.name,
       storeId: product.storeId,
       description: product.description,
+      referenceId: product.referenceId,
       inStock: product.inStock,
       image: product.image,
       price: product.price,
