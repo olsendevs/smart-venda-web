@@ -148,7 +148,7 @@ export function CreateUserForm({
                         htmlFor="name"
                         className="text-right"
                       >
-                        Nome
+                        Nome*
                       </Label>
                       <Input
                         id="name"
@@ -172,7 +172,7 @@ export function CreateUserForm({
                         htmlFor="email"
                         className="text-right"
                       >
-                        E-mail
+                        E-mail*
                       </Label>
                       <Input
                         id="email"
@@ -197,7 +197,7 @@ export function CreateUserForm({
                         htmlFor="password"
                         className="text-right"
                       >
-                        Senha
+                        Senha*
                       </Label>
                       <Input
                         id="password"
@@ -222,7 +222,7 @@ export function CreateUserForm({
                         htmlFor="username"
                         className="text-right"
                       >
-                        Tipo
+                        Tipo*
                       </Label>
                       <SelectForm
                         onChange={field.onChange}

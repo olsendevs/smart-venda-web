@@ -2,11 +2,12 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   //baseURL: 'http://74.235.186.233:3001',
-  baseURL: 'https://smartvenda.com.br/api',
+  //baseURL: 'https://smartvenda.com.br/api',
+  baseURL: 'http://localhost:3001/api',
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config: any) => {
     config.headers['Content-Type'] = 'application/json';
     const token = JSON.parse(
       localStorage.getItem('user') || '',
@@ -18,16 +19,16 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  (error: any) => {
     return Promise.reject(error);
   },
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     return response;
   },
-  (error) => {
+  (error: any) => {
     if (error.response && error.response.status === 403) {
       window.location.href = '/auth/sign-in';
     }

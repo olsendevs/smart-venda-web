@@ -111,7 +111,7 @@ export function CreateProductForm({
           ) {
             toast({
               title:
-                'Erro ao adicionar usuário. Tente novamente.',
+                'Erro ao adicionar produto. Tente novamente.',
               variant: 'destructive',
               description: responseData.message,
             });
@@ -121,7 +121,7 @@ export function CreateProductForm({
           setTableData([...tableData, responseData]);
 
           toast({
-            title: 'Usuário adicionado com sucesso!',
+            title: 'Produto adicionado com sucesso!',
             variant: 'default',
           });
         }
@@ -129,7 +129,7 @@ export function CreateProductForm({
     } catch (error) {
       console.error('Error:', error);
       toast({
-        title: 'Erro ao adicionar usuário.',
+        title: 'Erro ao adicionar produto.',
         variant: 'destructive',
       });
     }
@@ -172,7 +172,7 @@ export function CreateProductForm({
                         htmlFor="name"
                         className="text-right"
                       >
-                        Nome
+                        Nome*
                       </Label>
                       <Input
                         id="name"
@@ -196,7 +196,7 @@ export function CreateProductForm({
                         htmlFor="text"
                         className="text-right"
                       >
-                        Descrição
+                        Descrição*
                       </Label>
                       <Input
                         id="text"
@@ -221,7 +221,7 @@ export function CreateProductForm({
                         htmlFor="price"
                         className="text-right"
                       >
-                        Preço
+                        Preço*
                       </Label>
                       <Input
                         id="price"
@@ -246,7 +246,7 @@ export function CreateProductForm({
                         htmlFor="inStock"
                         className="text-right"
                       >
-                        Estoque
+                        Estoque*
                       </Label>
                       <Input
                         id="inStock"
