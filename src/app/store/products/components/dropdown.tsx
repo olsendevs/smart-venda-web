@@ -51,7 +51,7 @@ export function Dropdown({
       ) {
         toast({
           title:
-            'Erro ao deletar usuário. Tente novamente.',
+            'Erro ao deletar produto. Tente novamente.',
           variant: 'destructive',
         });
         return;
@@ -67,7 +67,7 @@ export function Dropdown({
     }
     setTimeout(() => {
       toast({
-        title: 'Usuário deletado com sucesso!',
+        title: 'Produto deletado com sucesso!',
         variant: 'destructive',
       });
       setIsLoading(false);

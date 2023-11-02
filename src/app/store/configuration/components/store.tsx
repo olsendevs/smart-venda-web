@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function Store({
   storeData,
@@ -130,7 +131,7 @@ export default function Store({
                         htmlFor="name"
                         className="text-right"
                       >
-                        Nome
+                        Nome*
                       </Label>
                       <Input
                         id="name"
@@ -154,7 +155,7 @@ export default function Store({
                         htmlFor="text"
                         className="text-right"
                       >
-                        CNPJ
+                        CNPJ*
                       </Label>
                       <Input
                         id="text"
@@ -181,13 +182,12 @@ export default function Store({
                       >
                         Mensagem enviada no /ajuda
                       </Label>
-                      <Input
+                      <Textarea
                         id="helpMessage"
                         onChange={field.onChange}
                         defaultValue={storeData.helpMessage}
                         disabled={isLoading}
                         className="col-span-3"
-                        type="text"
                       />
                       <FormMessage />
                     </FormItem>

@@ -55,7 +55,7 @@ export function EditProductForm({
         response.status === 400
       ) {
         toast({
-          title: 'Erro ao editar usuário. Tente novamente.',
+          title: 'Erro ao editar produto. Tente novamente.',
           variant: 'destructive',
           description: responseData.message,
         });
@@ -63,13 +63,13 @@ export function EditProductForm({
       }
 
       toast({
-        title: 'Usuário editado com sucesso!',
+        title: 'Produto editado com sucesso!',
         variant: 'default',
       });
     } catch (error) {
       console.error('Error:', error);
       toast({
-        title: 'Erro ao editar usuário.',
+        title: 'Erro ao editar produto.',
         variant: 'destructive',
       });
     }
@@ -89,7 +89,7 @@ export function EditProductForm({
       ></SheetTrigger>
       <SheetContent className="w-auto max-w-none">
         <SheetHeader>
-          <SheetTitle>Editar usuário</SheetTitle>
+          <SheetTitle>Editar produto</SheetTitle>
           <SheetDescription>
             Edite os dados e em seguida clique em salvar.
           </SheetDescription>

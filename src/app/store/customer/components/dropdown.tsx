@@ -30,7 +30,7 @@ export function Dropdown({
 
     try {
       const token = JSON.parse(
-        localStorage.getItem('customer') || '',
+        localStorage.getItem('user') || '',
       ).accessToken;
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/customer/${id}`,
@@ -48,7 +48,7 @@ export function Dropdown({
       ) {
         toast({
           title:
-            'Erro ao deletar usuário. Tente novamente.',
+            'Erro ao deletar cliente. Tente novamente.',
           variant: 'destructive',
         });
         return;
@@ -64,7 +64,7 @@ export function Dropdown({
     }
     setTimeout(() => {
       toast({
-        title: 'Usuário deletado com sucesso!',
+        title: 'Cliente deletado com sucesso!',
         variant: 'destructive',
       });
       setIsLoading(false);
@@ -113,6 +113,11 @@ export function Dropdown({
             }
           >
             Copiar WhatsApp
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => deleteCustomer(customer._id)}
+          >
+            Deletar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
