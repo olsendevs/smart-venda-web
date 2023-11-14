@@ -78,7 +78,7 @@ export function columns({
       cell: ({ row }) => {
         return (
           <div className="text-start ml-4">
-            {row.original?.totalPrice}
+            {`R$${row.original?.totalPrice}`}
           </div>
         );
       },

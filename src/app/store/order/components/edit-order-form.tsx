@@ -20,6 +20,7 @@ import {
   CardDescription,
   CardTitle,
 } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 
 export function EditOrderForm({
   formData,
@@ -111,6 +112,17 @@ export function EditOrderForm({
               className="col-span-3"
             />
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="_id" className="text-right">
+              Endereço
+            </Label>
+            <Textarea
+              placeholder={formData.customerId.address}
+              defaultValue={formData.customerId.address}
+              disabled={false}
+              className="col-span-3"
+            />
+          </div>
         </div>
 
         <SheetFooter>
@@ -132,6 +144,10 @@ export function EditOrderForm({
                       {item.productId.description}
                     </CardDescription>
                     <CardContent className="mt-5">
+                      <h4>
+                        Código de referencia:
+                        {item.referenceId}
+                      </h4>
                       <h4>Preço: {item.productId.price}</h4>
                       <h4>Quantidade: {item.qtd}</h4>
                     </CardContent>
