@@ -1,37 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Smart Venda Frontend
+Este projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-## Getting Started
+- TypeScript: Uma linguagem de programação superset do JavaScript que oferece tipagem estática opcional.
 
-First, run the development server:
+- Node.js: Um ambiente de execução JavaScript server-side que permite a construção de aplicações escaláveis e eficientes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- Next.js: Um framework React que facilita a construção de aplicativos web modernos, trazendo a renderização do lado do servidor e muitos recursos prontos para uso.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- React: Uma biblioteca JavaScript para construção de interfaces de usuário, utilizada para criar componentes reutilizáveis e dinâmicos.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Tailwind CSS: Um framework de utilitários CSS altamente configurável que facilita a criação de designs modernos e responsivos.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Executando o Projeto
+A seguir, estão os passos necessários para executar este projeto.
 
-## Learn More
+### Pré Requesitos
+Antes de iniciar, certifique-se de ter os seguintes requisitos instalados:
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js: É necessário ter o Node.js instalado. Saiba como instalá-lo em: 
+https://www.nodejs.org
+- Docker: Para facilitar a execução, recomendamos instalar o Docker. Saiba como instalá-los em: 
+https://www.docker.com
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Instalação do Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. No seu terminal, clone o repositório para o seu ambiente local.
+````bash
+git clone https://github.com/dwpl15/smart-venda-web.git
+````
+2. Acesse a pasta do projeto
+````bash
+cd smart-venda-web
+````
+1. Na raiz do projeto **/smart-venda-web** execute o docker:
+   1. Construa a Imagem Docker:
+    ````bash
+    docker build -t smart-web-frontend .
+    ````
+    2. Crie e Inicie um Contêiner:
+    ````bash
+    docker run --rm -it smart-web-frontend
+    ````
 
-## Deploy on Vercel
+### Acessando o projeto
+- O projeto estará hospedado em http://localhost:3000
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-pm2 stop next
-pm2 start npm --name "next" -- start
