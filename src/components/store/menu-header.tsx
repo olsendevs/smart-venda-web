@@ -112,7 +112,6 @@ export default function MenuHeader() {
                       className={navigationMenuTriggerStyle()}
                       onClick={() => {
                         logout()
-                        console.log('foi')
                         window.location.href = '/auth/login'
                       }}
                     >

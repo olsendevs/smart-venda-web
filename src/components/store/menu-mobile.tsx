@@ -122,7 +122,6 @@ export default function MenuMobile({ linkClick, logout }: MenuMobileProps) {
                 className={navigationMenuTriggerStyle()}
                 onClick={() => {
                   logout()
-                  console.log('foi')
                   window.location.href = '/auth/login'
                 }}
               >
