@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetClose,
@@ -10,29 +10,20 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { SelectForm } from './select-type';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
+} from '@/components/ui/sheet'
+import { SelectForm } from './select-type'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
 
-export function EditUserForm({
-  formData,
-  setFormData,
-  setUpdateData,
-}: any) {
-  const { setIsLoading } = useLoading();
+export function EditUserForm({ formData, setFormData, setUpdateData }: any) {
+  const { setIsLoading } = useLoading()
 
   const onSubmit = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const token = JSON.parse(
-        localStorage.getItem('user') || '',
-      ).accessToken;
+      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
 
-      const pass =
-        formData.password != null
-          ? formData.password
-          : undefined;
+      const pass = formData.password != null ? formData.password : undefined
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/user/${formData.id}`,
@@ -49,47 +40,41 @@ export function EditUserForm({
             'Content-Type': 'application/json',
           },
         },
-      );
+      )
 
-      const responseData = await response.json();
+      const responseData = await response.json()
 
-      if (
-        response.status === 500 ||
-        response.status === 400
-      ) {
+      if (response.status === 500 || response.status === 400) {
         toast({
           title: 'Erro ao editar usuário. Tente novamente.',
           variant: 'destructive',
           description: responseData.message,
-        });
-        return;
+        })
+        return
       }
 
       toast({
         title: 'Usuário editado com sucesso!',
         variant: 'default',
-      });
+      })
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
       toast({
         title: 'Erro ao editar usuário.',
         variant: 'destructive',
-      });
+      })
     }
-    document.getElementById('close')?.click();
+    document.getElementById('close')?.click()
 
     setTimeout(() => {
-      setUpdateData(new Date());
-      setIsLoading(false);
-    }, 300);
-  };
+      setUpdateData(new Date())
+      setIsLoading(false)
+    }, 300)
+  }
 
   return (
     <Sheet>
-      <SheetTrigger
-        id="open-edit-form"
-        className="hidden"
-      ></SheetTrigger>
+      <SheetTrigger id="open-edit-form" className="hidden"></SheetTrigger>
       <SheetContent className="w-auto max-w-none">
         <SheetHeader>
           <SheetTitle>Editar usuário</SheetTitle>
@@ -111,7 +96,7 @@ export function EditUserForm({
                   type: formData.type,
                   password: formData.password,
                   id: formData.id,
-                });
+                })
               }}
               className="col-span-3"
             />
@@ -129,7 +114,7 @@ export function EditUserForm({
                   type: formData.type,
                   password: formData.password,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-email"
               className="col-span-3"
@@ -137,10 +122,7 @@ export function EditUserForm({
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="password"
-              className="text-right"
-            >
+            <Label htmlFor="password" className="text-right">
               Senha
             </Label>
             <Input
@@ -152,7 +134,7 @@ export function EditUserForm({
                   email: formData.email,
                   password: e.target.value,
                   type: formData.type,
-                });
+                })
               }}
               id="edit-password"
               className="col-span-3"
@@ -160,10 +142,7 @@ export function EditUserForm({
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="username"
-              className="text-right"
-            >
+            <Label htmlFor="username" className="text-right">
               Tipo
             </Label>
             <SelectForm
@@ -175,7 +154,7 @@ export function EditUserForm({
                   email: formData.email,
                   password: formData.password,
                   type: e,
-                });
+                })
               }}
             />
           </div>
@@ -189,5 +168,5 @@ export function EditUserForm({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  );
+  )
 }

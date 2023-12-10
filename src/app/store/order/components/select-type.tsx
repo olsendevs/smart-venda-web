@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Select,
@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/select'
 
 export function SelectForm({ value, onChange }: any) {
   return (
@@ -15,13 +15,11 @@ export function SelectForm({ value, onChange }: any) {
         <SelectValue placeholder="Selecione" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="created">
-          Aguardando pagamento
-        </SelectItem>
+        <SelectItem value="created">Aguardando pagamento</SelectItem>
         <SelectItem value="payed">Pago</SelectItem>
         <SelectItem value="onWay">A Caminho</SelectItem>
         <SelectItem value="delivered">Entregue</SelectItem>
       </SelectContent>
     </Select>
-  );
+  )
 }

@@ -1,38 +1,30 @@
-'use client';
+'use client'
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import 'dotenv/config';
-import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { Toaster } from '@/components/ui/toaster';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
+import 'dotenv/config'
+import { LoadingSpinner } from '@/components/admin/loading-spinner'
+import { Toaster } from '@/components/ui/toaster'
+import { Button } from '@/components/ui/button'
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Label } from '@/components/ui/label'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardTitle,
-} from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
+} from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 
-export default function Store({
-  storeData,
-  setStoreData,
-}: any) {
-  const [isLoading, setIsLoading] = React.useState(false);
+export default function Store({ storeData, setStoreData }: any) {
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const FormSchema = z.object({
     name: z.string({
@@ -42,27 +34,23 @@ export default function Store({
       required_error: 'O CNPJ é obrigatório',
     }),
     helpMessage: z.string().optional(),
-  });
+  })
 
   useEffect(() => {
-    form.setValue('name', storeData.name);
-    form.setValue('cnpj', storeData.cnpj);
-    form.setValue('helpMessage', storeData.helpMessage);
-  }, [storeData]);
+    form.setValue('name', storeData.name)
+    form.setValue('cnpj', storeData.cnpj)
+    form.setValue('helpMessage', storeData.helpMessage)
+  }, [storeData])
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  });
+  })
 
-  async function onSubmit(
-    data: z.infer<typeof FormSchema>,
-  ) {
-    setIsLoading(true);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true)
     if (storeData) {
       try {
-        const token = JSON.parse(
-          localStorage.getItem('user') || '',
-        ).accessToken;
+        const token = JSON.parse(localStorage.getItem('user') || '').accessToken
 
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/store/${storeData._id}`,
@@ -74,48 +62,42 @@ export default function Store({
               'Content-Type': 'application/json',
             },
           },
-        );
+        )
 
-        const responseData = await response.json();
+        const responseData = await response.json()
 
-        if (
-          response.status === 500 ||
-          response.status === 400
-        ) {
+        if (response.status === 500 || response.status === 400) {
           toast({
-            title:
-              'Erro ao atualizar loja. Tente novamente.',
+            title: 'Erro ao atualizar loja. Tente novamente.',
             variant: 'destructive',
             description: responseData.message,
-          });
-          return;
+          })
+          return
         }
 
         toast({
           title: 'Loja atualizada com sucesso!',
           variant: 'default',
-        });
+        })
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
         toast({
           title: 'Erro ao atualizar loja.',
           variant: 'destructive',
-        });
+        })
       }
-      document.getElementById('close')?.click();
+      document.getElementById('close')?.click()
 
       setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
+        setIsLoading(false)
+      }, 300)
     }
   }
 
   return (
-    <Card className="w-[25vw] p-4 mr-auto ml-auto">
+    <Card className="flex flex-col w-full p-4 mr-auto ml-auto">
       <CardTitle>Configurações da loja</CardTitle>
-      <CardDescription>
-        Preencha as informações sobre sua loja.
-      </CardDescription>
+      <CardDescription>Preencha as informações sobre sua loja.</CardDescription>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -127,10 +109,7 @@ export default function Store({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="name"
-                        className="text-right"
-                      >
+                      <Label htmlFor="name" className="text-right">
                         Nome*
                       </Label>
                       <Input
@@ -151,11 +130,8 @@ export default function Store({
                   name="cnpj"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="text"
-                        className="text-right"
-                      >
-                        CNPJ*
+                      <Label htmlFor="text" className="text-right">
+                        CNPJ/CPF*
                       </Label>
                       <Input
                         id="text"
@@ -176,10 +152,7 @@ export default function Store({
                   name="helpMessage"
                   render={({ field }) => (
                     <FormItem className="">
-                      <Label
-                        htmlFor="helpMessage"
-                        className="text-right"
-                      >
+                      <Label htmlFor="helpMessage" className="text-right">
                         Mensagem enviada no /ajuda
                       </Label>
                       <Textarea
@@ -198,11 +171,7 @@ export default function Store({
             <div className=""></div>
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              type="submit"
-              id="submit"
-            >
+            <Button className="w-full" type="submit" id="submit">
               Salvar
             </Button>
           </CardFooter>
@@ -210,5 +179,5 @@ export default function Store({
         <Toaster />
       </Form>
     </Card>
-  );
+  )
 }

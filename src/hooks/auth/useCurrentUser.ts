@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import { AuthUser } from '../../types/auth-user';
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
+import { AuthUser } from '../../types/auth-user'
 
 export const useCurrentUser = () => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null)
 
   useEffect(() => {
-    const currentUser = Cookies.get('currentUser');
+    const currentUser = Cookies.get('currentUser')
     if (currentUser) {
-      setUser(JSON.parse(currentUser));
+      setUser(JSON.parse(currentUser))
     }
-  }, []);
+  }, [])
 
-  return { user };
-};
+  return { user }
+}

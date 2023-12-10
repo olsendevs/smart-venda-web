@@ -1,15 +1,9 @@
-import { Icons } from '../ui/icons';
+import { Icons } from '../ui/icons'
 
-export function LoadingSpinner({
-  visible,
-}: {
-  visible: boolean;
-}) {
+export function LoadingSpinner({ visible }: { visible: boolean }) {
   const spinnerClass = `z-50 fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-lg transition-opacity duration-300 ${
-    visible
-      ? 'opacity-100'
-      : 'opacity-0 pointer-events-none'
-  }`;
+    visible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+  }`
 
   return (
     <div className={spinnerClass}>
@@ -17,5 +11,5 @@ export function LoadingSpinner({
         <Icons.spinner className="w-full h-full animate-spin" />
       </div>
     </div>
-  );
+  )
 }

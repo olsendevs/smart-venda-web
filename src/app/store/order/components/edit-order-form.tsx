@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetClose,
@@ -10,35 +10,28 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { SelectForm } from './select-type';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
+} from '@/components/ui/sheet'
+import { SelectForm } from './select-type'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
-} from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
+} from '@/components/ui/card'
+import { Textarea } from '@/components/ui/textarea'
 
-export function EditOrderForm({
-  formData,
-  setFormData,
-  setUpdateData,
-}: any) {
+export function EditOrderForm({ formData, setFormData, setUpdateData }: any) {
   const status: Record<string, string> = {
     created: 'Aguardando pagamento',
     payed: 'Pago',
     onWay: 'A Caminho',
     delivered: 'Entregue',
-  };
+  }
   return (
     <Sheet>
-      <SheetTrigger
-        id="open-edit-form"
-        className="hidden"
-      ></SheetTrigger>
+      <SheetTrigger id="open-edit-form" className="hidden"></SheetTrigger>
       <SheetContent className="w-auto max-w-none">
         <SheetHeader>
           <SheetTitle>Detalhes do pedido</SheetTitle>
@@ -127,9 +120,7 @@ export function EditOrderForm({
 
         <SheetFooter>
           <div className="w-full flex-column items-center text-center">
-            <h1 className="items-center">
-              Items comprados
-            </h1>
+            <h1 className="items-center">Items comprados</h1>
             <div>
               {formData.items.map((item: any) => {
                 return (
@@ -152,7 +143,7 @@ export function EditOrderForm({
                       <h4>Quantidade: {item.qtd}</h4>
                     </CardContent>
                   </Card>
-                );
+                )
               })}
             </div>
           </div>
@@ -160,5 +151,5 @@ export function EditOrderForm({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  );
+  )
 }

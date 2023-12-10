@@ -1,5 +1,5 @@
-'use client';
-import { Button } from '@/components/ui/button';
+'use client'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +7,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
-import { Toaster } from '@/components/ui/toaster';
+} from '@/components/ui/dropdown-menu'
+import { MoreHorizontal } from 'lucide-react'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
+import { Toaster } from '@/components/ui/toaster'
 
 export function Dropdown({
   order,
@@ -19,7 +19,7 @@ export function Dropdown({
   tableData,
   setTableData,
 }: any) {
-  const { setIsLoading } = useLoading();
+  const { setIsLoading } = useLoading()
 
   function editOrder(order: any) {
     setEditFormData(() => ({
@@ -30,11 +30,9 @@ export function Dropdown({
       status: order.status,
       totalPrice: order.totalPrice,
       paymentType: order.paymentType,
-    }));
+    }))
 
-    document.getElementById('open-edit-form')?.click();
-
-    return;
+    document.getElementById('open-edit-form')?.click()
   }
 
   const handleUpdateStatus = (order: any) => {
@@ -46,14 +44,10 @@ export function Dropdown({
       status: order.status,
       totalPrice: order.totalPrice,
       paymentType: order.paymentType,
-    }));
+    }))
 
-    document
-      .getElementById('open-update-status-form')
-      ?.click();
-
-    return;
-  };
+    document.getElementById('open-update-status-form')?.click()
+  }
 
   return (
     <>
@@ -65,19 +59,17 @@ export function Dropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            Ações no pedido
-          </DropdownMenuLabel>
+          <DropdownMenuLabel>Ações no pedido</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
-              editOrder(order);
+              editOrder(order)
             }}
           >
             Ver detalhes
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              handleUpdateStatus(order);
+              handleUpdateStatus(order)
             }}
           >
             Alterar Status
@@ -85,5 +77,5 @@ export function Dropdown({
         </DropdownMenuContent>
       </DropdownMenu>
     </>
-  );
+  )
 }

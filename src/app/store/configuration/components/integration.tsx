@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 
-import 'dotenv/config';
-import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { Toaster } from '@/components/ui/toaster';
-import { Button } from '@/components/ui/button';
+import 'dotenv/config'
+import { LoadingSpinner } from '@/components/admin/loading-spinner'
+import { Toaster } from '@/components/ui/toaster'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -14,50 +14,43 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
+} from '@/components/ui/form'
+import { Label } from '@/components/ui/label'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardTitle,
-} from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+} from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
 
-export default function Integration({
-  storeData,
-  setStoreData,
-}: any) {
-  const [isLoading, setIsLoading] = React.useState(false);
+export default function Integration({ storeData, setStoreData }: any) {
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const FormSchema = z.object({
     method: z.boolean().default(false).optional(),
     apiKey: z.string({
       required_error: 'A Key da API é obrigatória',
     }),
-  });
+  })
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       method: false,
     },
-  });
+  })
 
-  async function onSubmit(
-    data: z.infer<typeof FormSchema>,
-  ) {
-    setIsLoading(true);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true)
     if (storeData) {
       try {
-        const token = JSON.parse(
-          localStorage.getItem('user') || '',
-        ).accessToken;
+        const token = JSON.parse(localStorage.getItem('user') || '').accessToken
 
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/store/${storeData._id}`,
@@ -69,44 +62,40 @@ export default function Integration({
               'Content-Type': 'application/json',
             },
           },
-        );
+        )
 
-        const responseData = await response.json();
+        const responseData = await response.json()
 
-        if (
-          response.status === 500 ||
-          response.status === 400
-        ) {
+        if (response.status === 500 || response.status === 400) {
           toast({
-            title:
-              'Erro ao adicionar usuário. Tente novamente.',
+            title: 'Erro ao adicionar usuário. Tente novamente.',
             variant: 'destructive',
             description: responseData.message,
-          });
-          return;
+          })
+          return
         }
 
         toast({
           title: 'Usuário adicionado com sucesso!',
           variant: 'default',
-        });
+        })
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
         toast({
           title: 'Erro ao adicionar usuário.',
           variant: 'destructive',
-        });
+        })
       }
-      document.getElementById('close')?.click();
+      document.getElementById('close')?.click()
 
       setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
+        setIsLoading(false)
+      }, 300)
     }
   }
 
   return (
-    <Card className="w-[25vw] p-4 mr-auto ml-auto">
+    <Card className="w-full p-4 mr-auto ml-auto">
       <CardTitle>Integração com MercadoPago</CardTitle>
       <CardDescription>
         Seus clientes podem pagar pelo MercadoPago.
@@ -125,14 +114,13 @@ export default function Integration({
                   name="method"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 ">
                         <FormLabel>
-                          Ativar integração com o
-                          MercadoPago
+                          Ativar integração com o MercadoPago
                         </FormLabel>
-                        <FormDescription className="w-[90%]">
-                          Ao ativar essa opção será possivel
-                          automatizar o pagamento.
+                        <FormDescription className="w-[90%] mm:text-xs md:text-sm">
+                          Ao ativar essa opção será possivel automatizar o
+                          pagamento.
                         </FormDescription>
                       </div>
                       <FormControl>
@@ -145,15 +133,13 @@ export default function Integration({
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="apiKey"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="apiKey"
-                        className="text-right"
-                      >
+                      <Label htmlFor="apiKey" className="text-right">
                         Key da API
                       </Label>
                       <Input
@@ -183,5 +169,5 @@ export default function Integration({
         </form>
       </Form>
     </Card>
-  );
+  )
 }

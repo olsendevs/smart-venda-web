@@ -5,6 +5,6 @@ export const protectedRoutes = [
   '/admin/ambient',
   '/admin/project',
   '/admin/maintenance',
-];
-export const authRoutes = ['/auth/login'];
-export const publicRoutes = [];
+]
+export const authRoutes = ['/auth/login']
+export const publicRoutes = []

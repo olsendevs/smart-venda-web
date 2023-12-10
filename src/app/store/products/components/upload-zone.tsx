@@ -1,29 +1,26 @@
-import { Card } from '@/components/ui/card';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { Card } from '@/components/ui/card'
+import Image from 'next/image'
+import React, { useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 
-function ImageUpload({
-  uploadedFile,
-  setUploadedFile,
-}: any) {
+function ImageUpload({ uploadedFile, setUploadedFile }: any) {
   const onDrop = (acceptedFiles: any) => {
-    const file = acceptedFiles[0];
-    setUploadedFile(file);
-  };
+    const file = acceptedFiles[0]
+    setUploadedFile(file)
+  }
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { accept: ['image/*'] },
-  });
+  })
 
   return (
     <Card className="p-9 mt-5 mb-5 cursor-pointer">
       <div {...getRootProps()} className="dropzone">
         <input {...getInputProps()} />
         <p>
-          Arraste e solte a imagem do produto aqui ou clique
-          para selecionar uma imagem.
+          Arraste e solte a imagem do produto aqui ou clique para selecionar uma
+          imagem.
         </p>
       </div>
       {uploadedFile && (
@@ -39,7 +36,7 @@ function ImageUpload({
         </div>
       )}
     </Card>
-  );
+  )
 }
 
-export default ImageUpload;
+export default ImageUpload

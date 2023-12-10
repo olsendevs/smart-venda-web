@@ -1,11 +1,11 @@
-import { Metadata } from 'next';
-import { UserAuthForm } from './components/user-auth-form';
+import { Metadata } from 'next'
+import { UserAuthForm } from './components/user-auth-form'
 
 export default function AuthenticationPage() {
   return (
     <>
-      <div className="container relative hidden h-[100vh] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+      <div className="container relative hidden h-[100vh] flex-col items-center justify-center lg:grid lg:max-w-none sm:grid-cols-2 sm:px-0 mm:flex">
+        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex md:flex-none">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
             <svg
@@ -25,22 +25,21 @@ export default function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;Conhecer a si mesmo é o primeiro
-                passo para compreender o universo&rdquo;
+                &ldquo;Conhecer a si mesmo é o primeiro passo para compreender o
+                universo&rdquo;
               </p>
               <footer className="text-sm">Sócrates</footer>
             </blockquote>
           </div>
         </div>
         <div className="lg:p-18">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[24vw]">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:w-[24vw]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-3xl font-semibold tracking-tight">
+              <h1 className="mm:text-2xl sm:text-3xl font-semibold tracking-tight">
                 Olá, tudo bem? 😊
               </h1>
               <p className="text-sm text-muted-foreground">
-                Insira seu e-mail e sua senha abaixo para
-                acessar o painel
+                Insira seu e-mail e sua senha abaixo para acessar o painel
               </p>
             </div>
             <UserAuthForm />
@@ -48,5 +47,5 @@ export default function AuthenticationPage() {
         </div>
       </div>
     </>
-  );
+  )
 }
