@@ -39,7 +39,7 @@ cd smart-venda-web
     ````
     2. Crie e Inicie um Contêiner:
     ````bash
-    docker run --rm -it smart-web-frontend
+    docker run -p 3000:3000 smart-web-frontend
     ````
 
 ### Acessando o projeto
