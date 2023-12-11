@@ -1,5 +1,5 @@
-'use client';
-import { Button } from '@/components/ui/button';
+'use client'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +7,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
-import { Toaster } from '@/components/ui/toaster';
+} from '@/components/ui/dropdown-menu'
+import { MoreHorizontal } from 'lucide-react'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
+import { Toaster } from '@/components/ui/toaster'
 
 export function Dropdown({
   product,
@@ -19,9 +19,9 @@ export function Dropdown({
   tableData,
   setTableData,
 }: any) {
-  const { setIsLoading } = useLoading();
+  const { setIsLoading } = useLoading()
   async function deleteProduct(id: any) {
-    setIsLoading(true);
+    setIsLoading(true)
     setEditFormData({
       storeId: '',
       name: '',
@@ -29,12 +29,10 @@ export function Dropdown({
       inStock: '',
       image: '',
       price: '',
-    });
+    })
 
     try {
-      const token = JSON.parse(
-        localStorage.getItem('user') || '',
-      ).accessToken;
+      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/product/${id}`,
         {
@@ -43,36 +41,29 @@ export function Dropdown({
             Authorization: `Bearer ${token}`,
           },
         },
-      );
+      )
 
-      if (
-        response.status === 500 ||
-        response.status === 400
-      ) {
+      if (response.status === 500 || response.status === 400) {
         toast({
-          title:
-            'Erro ao deletar produto. Tente novamente.',
+          title: 'Erro ao deletar produto. Tente novamente.',
           variant: 'destructive',
-        });
-        return;
+        })
+        return
       }
 
-      const tableDataWithoutDeleted = tableData.filter(
-        (x: any) => x._id != id,
-      );
+      const tableDataWithoutDeleted = tableData.filter((x: any) => x._id !== id)
 
-      setTableData(tableDataWithoutDeleted);
+      setTableData(tableDataWithoutDeleted)
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
     }
     setTimeout(() => {
       toast({
         title: 'Produto deletado com sucesso!',
         variant: 'destructive',
-      });
-      setIsLoading(false);
-    }, 300);
-    return;
+      })
+      setIsLoading(false)
+    }, 300)
   }
 
   function editProduct(product: any) {
@@ -85,12 +76,10 @@ export function Dropdown({
       image: product.image,
       price: product.price,
       id: product._id,
-    }));
+    }))
 
-    console.log(product);
-    document.getElementById('open-edit-form')?.click();
-
-    return;
+    console.log(product)
+    document.getElementById('open-edit-form')?.click()
   }
 
   return (
@@ -103,21 +92,15 @@ export function Dropdown({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            Ações no produto
-          </DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => editProduct(product)}
-          >
+          <DropdownMenuLabel>Ações no produto</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => editProduct(product)}>
             Editar
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => deleteProduct(product._id)}
-          >
+          <DropdownMenuItem onClick={() => deleteProduct(product._id)}>
             Deletar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
-  );
+  )
 }

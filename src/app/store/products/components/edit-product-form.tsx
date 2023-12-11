@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetClose,
@@ -10,24 +10,18 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { SelectForm } from './select-type';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
+} from '@/components/ui/sheet'
+import { SelectForm } from './select-type'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
 
-export function EditProductForm({
-  formData,
-  setFormData,
-  setUpdateData,
-}: any) {
-  const { setIsLoading } = useLoading();
+export function EditProductForm({ formData, setFormData, setUpdateData }: any) {
+  const { setIsLoading } = useLoading()
 
   const onSubmit = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const token = JSON.parse(
-        localStorage.getItem('user') || '',
-      ).accessToken;
+      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/product/${formData.id}`,
@@ -47,47 +41,41 @@ export function EditProductForm({
             'Content-Type': 'application/json',
           },
         },
-      );
+      )
 
-      const responseData = await response.json();
+      const responseData = await response.json()
 
-      if (
-        response.status === 500 ||
-        response.status === 400
-      ) {
+      if (response.status === 500 || response.status === 400) {
         toast({
           title: 'Erro ao editar produto. Tente novamente.',
           variant: 'destructive',
           description: responseData.message,
-        });
-        return;
+        })
+        return
       }
 
       toast({
         title: 'Produto editado com sucesso!',
         variant: 'default',
-      });
+      })
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
       toast({
         title: 'Erro ao editar produto.',
         variant: 'destructive',
-      });
+      })
     }
-    document.getElementById('close')?.click();
+    document.getElementById('close')?.click()
 
     setTimeout(() => {
-      setUpdateData(new Date());
-      setIsLoading(false);
-    }, 300);
-  };
+      setUpdateData(new Date())
+      setIsLoading(false)
+    }, 300)
+  }
 
   return (
     <Sheet>
-      <SheetTrigger
-        id="open-edit-form"
-        className="hidden"
-      ></SheetTrigger>
+      <SheetTrigger id="open-edit-form" className="hidden"></SheetTrigger>
       <SheetContent className="w-auto max-w-none">
         <SheetHeader>
           <SheetTitle>Editar produto</SheetTitle>
@@ -112,16 +100,13 @@ export function EditProductForm({
                   image: formData.image,
                   price: formData.price,
                   id: formData.id,
-                });
+                })
               }}
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="description"
-              className="text-right"
-            >
+            <Label htmlFor="description" className="text-right">
               Descrição
             </Label>
             <Input
@@ -136,7 +121,7 @@ export function EditProductForm({
                   referenceId: formData.referenceId,
                   price: formData.price,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-description"
               className="col-span-3"
@@ -159,7 +144,7 @@ export function EditProductForm({
                   image: formData.image,
                   price: formData.price,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-inStock"
               className="col-span-3"
@@ -182,7 +167,7 @@ export function EditProductForm({
                   image: formData.image,
                   price: e.target.value,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-price"
               className="col-span-3"
@@ -205,7 +190,7 @@ export function EditProductForm({
                   image: formData.image,
                   price: formData.price,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-image"
               className="col-span-3"
@@ -228,7 +213,7 @@ export function EditProductForm({
                   image: e.target.value,
                   price: formData.price,
                   id: formData.id,
-                });
+                })
               }}
               id="edit-image"
               className="col-span-3"
@@ -245,5 +230,5 @@ export function EditProductForm({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  );
+  )
 }

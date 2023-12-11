@@ -1,36 +1,31 @@
-'use client';
+'use client'
 
-import React from 'react';
+import React from 'react'
 
-import 'dotenv/config';
-import { LoadingSpinner } from '@/components/admin/loading-spinner';
-import { Toaster } from '@/components/ui/toaster';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
+import 'dotenv/config'
+import { LoadingSpinner } from '@/components/admin/loading-spinner'
+import { Toaster } from '@/components/ui/toaster'
+import { Button } from '@/components/ui/button'
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Label } from '@/components/ui/label'
+import { useForm } from 'react-hook-form'
+import z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@/components/ui/input'
+import { toast } from '@/components/ui/use-toast'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardTitle,
-} from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import Store from './components/store';
-import Integration from './components/integration';
+} from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
+import Store from './components/store'
+import Integration from './components/integration'
 
 export default function Configurations() {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false)
   const [store, setStore] = React.useState({
     name: undefined,
     _id: undefined,
@@ -40,14 +35,12 @@ export default function Configurations() {
       method: 'confirmation',
       apiKey: '',
     },
-  });
+  })
   React.useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        const user = JSON.parse(
-          localStorage.getItem('user') || '',
-        );
+        const user = JSON.parse(localStorage.getItem('user') || '')
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/store/by-user`,
           {
@@ -55,8 +48,8 @@ export default function Configurations() {
               Authorization: `Bearer ${user.accessToken}`,
             },
           },
-        );
-        const responseData = await response.json();
+        )
+        const responseData = await response.json()
 
         if (!responseData._id) {
           const createdStore = await fetch(
@@ -77,31 +70,28 @@ export default function Configurations() {
                 'Content-Type': 'application/json',
               },
             },
-          );
-          setStore(await createdStore.json());
+          )
+          setStore(await createdStore.json())
         } else {
-          setStore(responseData);
+          setStore(responseData)
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
       }
       setTimeout(() => {
-        setIsLoading(false);
-      }, 300);
+        setIsLoading(false)
+      }, 300)
     }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
   return (
-    <main className="pt-20 pl-5 flex w-[55vw] mr-auto ml-auto">
+    <main className="w-full pt-20 flex mm:flex-col md:flex-row w-[55vw] mr-auto ml-auto mm:gap-2 lg:gap-4">
       <Store storeData={store} setStoreData={setStore} />
 
-      <Integration
-        storeData={store}
-        setStoreData={setStore}
-      />
+      <Integration storeData={store} setStoreData={setStore} />
 
       <LoadingSpinner visible={isLoading} />
     </main>
-  );
+  )
 }

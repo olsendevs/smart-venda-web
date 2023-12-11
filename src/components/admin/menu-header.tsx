@@ -3,39 +3,33 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-} from '@radix-ui/react-navigation-menu';
+} from '@radix-ui/react-navigation-menu'
 
-import { navigationMenuTriggerStyle } from '../ui/navigation-menu';
-import { useLogout } from '@/hooks/auth/useLogout';
-import Link from 'next/link';
-import { ModeToggle } from './mode-toggle';
-import { LoadingSpinner } from './loading-spinner';
-import { useLoading } from './is-loading';
+import { navigationMenuTriggerStyle } from '../ui/navigation-menu'
+import { useLogout } from '@/hooks/auth/useLogout'
+import Link from 'next/link'
+import { ModeToggle } from './mode-toggle'
+import { LoadingSpinner } from './loading-spinner'
+import { useLoading } from './is-loading'
+import MenuMobile from './menu-mobile'
 
 export default function MenuHeader() {
-  const { logout } = useLogout();
-  const { isLoading, setIsLoading } = useLoading();
+  const { logout } = useLogout()
+  const { isLoading, setIsLoading } = useLoading()
 
   const handleLinkClick = () => {
-    setIsLoading(true);
-  };
+    setIsLoading(true)
+  }
 
   return (
     <div className="shadow-lg border-b-1 py-2 border-gray-200 fixed w-full">
-      <div className="container mx-auto px-auto">
+      <div className="container mx-auto px-4">
         <NavigationMenu>
-          <NavigationMenuList className="flex">
+          <NavigationMenuList className="flex items-center justify-between">
             <NavigationMenuItem className="mr-10">
-              <Link
-                href="/admin/user"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={''}
-                  onClick={handleLinkClick}
-                >
-                  <div className="py-1.5 relative flex items-center text-lg font-medium">
+              <Link href="/admin/user" legacyBehavior passHref>
+                <NavigationMenuLink className={''} onClick={handleLinkClick}>
+                  <div className="py-1.5 relative flex items-center mm:text-sm md:text-lg font-medium">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -54,12 +48,8 @@ export default function MenuHeader() {
               </Link>
             </NavigationMenuItem>
 
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/admin/user"
-                legacyBehavior
-                passHref
-              >
+            <NavigationMenuItem className="flex w-full mm:hidden lg:flex mx-1">
+              <Link href="/admin/user" legacyBehavior passHref>
                 <NavigationMenuLink
                   className={navigationMenuTriggerStyle()}
                   onClick={handleLinkClick}
@@ -68,25 +58,18 @@ export default function MenuHeader() {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+
+            <div className="mm:hidden lg:flex flex flex-1 items-center justify-between space-x-2 md:justify-end">
               <NavigationMenuItem className="ml-auto">
                 <ModeToggle />
               </NavigationMenuItem>
-              <NavigationMenuItem
-                className="ml-auto"
-                onClick={handleLinkClick}
-              >
-                <Link
-                  href="/auth/login"
-                  legacyBehavior
-                  passHref
-                >
+              <NavigationMenuItem className="ml-auto" onClick={handleLinkClick}>
+                <Link href="/auth/login" legacyBehavior passHref>
                   <NavigationMenuLink
                     className={navigationMenuTriggerStyle()}
                     onClick={() => {
-                      logout();
-                      console.log('foi');
-                      window.location.href = '/auth/login';
+                      logout()
+                      window.location.href = '/auth/login'
                     }}
                   >
                     Sair
@@ -94,10 +77,12 @@ export default function MenuHeader() {
                 </Link>
               </NavigationMenuItem>
             </div>
+
+            <MenuMobile linkClick={handleLinkClick} logout={logout} />
           </NavigationMenuList>
         </NavigationMenu>
       </div>
       <LoadingSpinner visible={isLoading} />
     </div>
-  );
+  )
 }

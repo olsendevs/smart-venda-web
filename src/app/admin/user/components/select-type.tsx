@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Select,
@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/select'
 
 export function SelectForm({ value, onChange }: any) {
   return (
@@ -16,10 +16,8 @@ export function SelectForm({ value, onChange }: any) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="admin">Admin</SelectItem>
-        <SelectItem value="store_owner">
-          Dono de loja
-        </SelectItem>
+        <SelectItem value="store_owner">Dono de loja</SelectItem>
       </SelectContent>
     </Select>
-  );
+  )
 }

@@ -3,39 +3,33 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-} from '@radix-ui/react-navigation-menu';
+} from '@radix-ui/react-navigation-menu'
 
-import { navigationMenuTriggerStyle } from '../ui/navigation-menu';
-import { useLogout } from '@/hooks/auth/useLogout';
-import Link from 'next/link';
-import { ModeToggle } from '../admin/mode-toggle';
-import { LoadingSpinner } from '../admin/loading-spinner';
-import { useLoading } from '../admin/is-loading';
+import { navigationMenuTriggerStyle } from '../ui/navigation-menu'
+import { useLogout } from '@/hooks/auth/useLogout'
+import Link from 'next/link'
+import { ModeToggle } from '../admin/mode-toggle'
+import { LoadingSpinner } from '../admin/loading-spinner'
+import { useLoading } from '../admin/is-loading'
+import MenuMobile from './menu-mobile'
 
 export default function MenuHeader() {
-  const { logout } = useLogout();
-  const { isLoading, setIsLoading } = useLoading();
+  const { logout } = useLogout()
+  const { isLoading, setIsLoading } = useLoading()
 
   const handleLinkClick = () => {
-    setIsLoading(true);
-  };
+    setIsLoading(true)
+  }
 
   return (
-    <div className="shadow-lg border-b-1 py-2 border-gray-200 fixed w-full">
-      <div className="container mx-auto px-auto">
+    <div className="shadow-lg border-b-1 py-2 border-gray-200 fixed w-full bg-background">
+      <div className="container mx-auto px-4">
         <NavigationMenu>
-          <NavigationMenuList className="flex">
+          <NavigationMenuList className="flex items-center justify-between">
             <NavigationMenuItem className="mr-10">
-              <Link
-                href="/store/order"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={''}
-                  onClick={handleLinkClick}
-                >
-                  <div className="py-1.5 relative flex items-center text-lg font-medium">
+              <Link href="/store/order" legacyBehavior passHref>
+                <NavigationMenuLink className={''} onClick={handleLinkClick}>
+                  <div className="py-1.5 relative flex items-center mm:text-sm md:text-lg font-medium">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -54,106 +48,85 @@ export default function MenuHeader() {
               </Link>
             </NavigationMenuItem>
 
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/store/order"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  onClick={handleLinkClick}
-                >
-                  Pedidos
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/store/products"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  onClick={handleLinkClick}
-                >
-                  Produtos
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/store/customer"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  onClick={handleLinkClick}
-                >
-                  Clientes
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/store/whatsapp"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  onClick={handleLinkClick}
-                >
-                  Conexão WhatsApp
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem className="mx-1">
-              <Link
-                href="/store/configuration"
-                legacyBehavior
-                passHref
-              >
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  onClick={handleLinkClick}
-                >
-                  Configurações
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-              <NavigationMenuItem className="ml-auto">
-                <ModeToggle />
-              </NavigationMenuItem>
-              <NavigationMenuItem
-                className="ml-auto"
-                onClick={handleLinkClick}
-              >
-                <Link
-                  href="/auth/login"
-                  legacyBehavior
-                  passHref
-                >
+            <div className="flex w-full mm:hidden lg:flex">
+              <NavigationMenuItem className="mx-1">
+                <Link href="/store/order" legacyBehavior passHref>
                   <NavigationMenuLink
                     className={navigationMenuTriggerStyle()}
-                    onClick={() => {
-                      logout();
-                      console.log('foi');
-                      window.location.href = '/auth/login';
-                    }}
+                    onClick={handleLinkClick}
                   >
-                    Sair
+                    Pedidos
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
+              <NavigationMenuItem className="mx-1">
+                <Link href="/store/products" legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    onClick={handleLinkClick}
+                  >
+                    Produtos
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem className="mx-1">
+                <Link href="/store/customer" legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    onClick={handleLinkClick}
+                  >
+                    Clientes
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem className="mx-1">
+                <Link href="/store/whatsapp" legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    onClick={handleLinkClick}
+                  >
+                    Conexão WhatsApp
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem className="mx-1">
+                <Link href="/store/configuration" legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={navigationMenuTriggerStyle()}
+                    onClick={handleLinkClick}
+                  >
+                    Configurações
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+                <NavigationMenuItem className="ml-auto">
+                  <ModeToggle />
+                </NavigationMenuItem>
+                <NavigationMenuItem
+                  className="ml-auto"
+                  onClick={handleLinkClick}
+                >
+                  <Link href="/auth/login" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                      onClick={() => {
+                        logout()
+                        window.location.href = '/auth/login'
+                      }}
+                    >
+                      Sair
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </div>
             </div>
+
+            <MenuMobile linkClick={handleLinkClick} logout={logout} />
           </NavigationMenuList>
         </NavigationMenu>
       </div>
       <LoadingSpinner visible={isLoading} />
     </div>
-  );
+  )
 }

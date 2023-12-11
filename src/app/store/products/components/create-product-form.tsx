@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetClose,
@@ -10,30 +10,27 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { SelectForm } from './select-type';
-import { useLoading } from '@/components/admin/is-loading';
-import { toast } from '@/components/ui/use-toast';
-import { Toaster } from '@/components/ui/toaster';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from '@/components/ui/sheet'
+import { SelectForm } from './select-type'
+import { useLoading } from '@/components/admin/is-loading'
+import { toast } from '@/components/ui/use-toast'
+import { Toaster } from '@/components/ui/toaster'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/components/ui/form'
 
-import React, { useState } from 'react';
-import UploadZone from './upload-zone';
-import { v4 as uuidv4 } from 'uuid';
-export function CreateProductForm({
-  tableData,
-  setTableData,
-}: any) {
-  const [uploadedFile, setUploadedFile] = useState(null);
+import React, { useState } from 'react'
+import UploadZone from './upload-zone'
+import { v4 as uuidv4 } from 'uuid'
+export function CreateProductForm({ tableData, setTableData }: any) {
+  const [uploadedFile, setUploadedFile] = useState(null)
   const FormSchema = z.object({
     name: z.string({
       required_error: 'O nome é obrigatório',
@@ -50,32 +47,28 @@ export function CreateProductForm({
     price: z.string({
       required_error: 'O preço é obrigatório',
     }),
-  });
+  })
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  });
+  })
 
-  const { isLoading, setIsLoading } = useLoading();
+  const { isLoading, setIsLoading } = useLoading()
 
-  async function onSubmit(
-    data: z.infer<typeof FormSchema>,
-  ) {
-    setIsLoading(true);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true)
     try {
-      const token = JSON.parse(
-        localStorage.getItem('user') || '',
-      ).accessToken;
-      const image: any = uploadedFile;
+      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
+      const image: any = uploadedFile
 
-      console.log(image);
+      console.log(image)
 
       if (image) {
-        const formData = new FormData();
+        const formData = new FormData()
 
-        const uuid: string = uuidv4();
+        const uuid: string = uuidv4()
 
-        formData.append('file', image);
+        formData.append('file', image)
 
         const imageResponse = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/bucket`,
@@ -86,10 +79,10 @@ export function CreateProductForm({
               Authorization: `Bearer ${token}`,
             },
           },
-        );
-        console.log(imageResponse.status);
-        if (imageResponse.status == 201) {
-          const imageUrl = await imageResponse.text();
+        )
+        console.log(imageResponse.status)
+        if (imageResponse.status === 201) {
+          const imageUrl = await imageResponse.text()
 
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/product/`,
@@ -104,64 +97,57 @@ export function CreateProductForm({
                 'Content-Type': 'application/json',
               },
             },
-          );
+          )
 
-          const responseData = await response.json();
+          const responseData = await response.json()
 
-          if (
-            response.status === 500 ||
-            response.status === 400
-          ) {
+          if (response.status === 500 || response.status === 400) {
             toast({
-              title:
-                'Erro ao adicionar produto. Tente novamente.',
+              title: 'Erro ao adicionar produto. Tente novamente.',
               variant: 'destructive',
               description: responseData.message,
-            });
-            return;
+            })
+            return
           }
 
-          setTableData([...tableData, responseData]);
+          setTableData([...tableData, responseData])
 
           toast({
             title: 'Produto adicionado com sucesso!',
             variant: 'default',
-          });
+          })
         }
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
       toast({
         title: 'Erro ao adicionar produto.',
         variant: 'destructive',
-      });
+      })
     }
-    document.getElementById('close')?.click();
+    document.getElementById('close')?.click()
 
     setTimeout(() => {
-      form.reset();
-      setUploadedFile(null);
-      setIsLoading(false);
-    }, 300);
+      form.reset()
+      setUploadedFile(null)
+      setIsLoading(false)
+    }, 300)
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Sheet>
-          <SheetTrigger
-            id="open-create-form"
-            className="hidden"
-          ></SheetTrigger>
+          <SheetTrigger id="open-create-form" className="hidden"></SheetTrigger>
           <SheetContent
             side={'left'}
             className="w-auto max-w-none"
+            style={{ overflowY: 'scroll' }}
           >
             <SheetHeader>
               <SheetTitle>Criar produto</SheetTitle>
               <SheetDescription>
-                Inseria os dados e em seguida clique em
-                salvar.
+                Inseria os dados e em seguida clique em salvar.
               </SheetDescription>
             </SheetHeader>
             <div className="grid w-auto gap-1 py-4">
@@ -171,10 +157,7 @@ export function CreateProductForm({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="name"
-                        className="text-right"
-                      >
+                      <Label htmlFor="name" className="text-right">
                         Nome*
                       </Label>
                       <Input
@@ -195,10 +178,7 @@ export function CreateProductForm({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="text"
-                        className="text-right"
-                      >
+                      <Label htmlFor="text" className="text-right">
                         Descrição*
                       </Label>
                       <Input
@@ -220,10 +200,7 @@ export function CreateProductForm({
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="price"
-                        className="text-right"
-                      >
+                      <Label htmlFor="price" className="text-right">
                         Preço*
                       </Label>
                       <Input
@@ -245,10 +222,7 @@ export function CreateProductForm({
                   name="inStock"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="inStock"
-                        className="text-right"
-                      >
+                      <Label htmlFor="inStock" className="text-right">
                         Estoque*
                       </Label>
                       <Input
@@ -270,10 +244,7 @@ export function CreateProductForm({
                   name="referenceId"
                   render={({ field }) => (
                     <FormItem>
-                      <Label
-                        htmlFor="referenceId"
-                        className="text-right"
-                      >
+                      <Label htmlFor="referenceId" className="text-right">
                         ID de referencia*
                       </Label>
                       <Input
@@ -299,34 +270,24 @@ export function CreateProductForm({
               <Button
                 type="submit"
                 onClick={() => {
-                  document
-                    .getElementById('submit')
-                    ?.click();
+                  document.getElementById('submit')?.click()
                 }}
               >
                 Salvar
               </Button>
               <SheetClose asChild>
-                <Button
-                  type="submit"
-                  id="close"
-                  className="hidden"
-                >
+                <Button type="submit" id="close" className="hidden">
                   Salvar
                 </Button>
               </SheetClose>
             </SheetFooter>
           </SheetContent>
         </Sheet>
-        <Button
-          type="submit"
-          className="hidden"
-          id="submit"
-        >
+        <Button type="submit" className="hidden" id="submit">
           Salvar
         </Button>
       </form>
       <Toaster />
     </Form>
-  );
+  )
 }

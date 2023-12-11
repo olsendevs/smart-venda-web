@@ -1,86 +1,72 @@
-'use client';
+'use client'
 
-import * as React from 'react';
+import * as React from 'react'
 
-import { cn } from '@/lib/utils';
-import { Icons } from '@/components/ui/icons';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { useRouter } from 'next/navigation';
-import { Toaster } from '@/components/ui/toaster';
-import { toast } from '@/components/ui/use-toast';
-import { useLogin } from '@/hooks/auth/useLogin';
-interface UserAuthFormProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+import { cn } from '@/lib/utils'
+import { Icons } from '@/components/ui/icons'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { useRouter } from 'next/navigation'
+import { Toaster } from '@/components/ui/toaster'
+import { toast } from '@/components/ui/use-toast'
+import { useLogin } from '@/hooks/auth/useLogin'
+type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>
 
-export function UserAuthForm({
-  className,
-  ...props
-}: UserAuthFormProps) {
-  const router = useRouter();
+export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter()
   const FormSchema = z.object({
     email: z
       .string({
-        required_error:
-          'Preencha corretamente seu e-mail para continuar',
+        required_error: 'Preencha corretamente seu e-mail para continuar',
       })
       .email(),
     password: z.string({
       required_error: 'Digite sua senha para continuar',
     }),
-  });
+  })
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-  });
+  })
 
-  const [isLoading, setIsLoading] =
-    React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
-  const { login } = useLogin();
+  const { login } = useLogin()
 
-  async function onSubmit(
-    data: z.infer<typeof FormSchema>,
-  ) {
-    setIsLoading(true);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true)
     if (!data.email || !data.password) {
       toast({
         description: 'Please enter information',
         variant: 'destructive',
-      });
+      })
     } else {
       await login(data.email, data.password)
         .then((res) => {
-          localStorage.setItem('user', JSON.stringify(res));
+          localStorage.setItem('user', JSON.stringify(res))
 
           setTimeout(() => {
-            if (res.type == 'admin') {
-              router.push('/admin/user');
+            if (res.type === 'admin') {
+              router.push('/admin/user')
             } else {
-              router.push('/store/order');
+              router.push('/store/order')
             }
 
-            setIsLoading(false);
-          }, 300);
+            setIsLoading(false)
+          }, 300)
         })
         .catch((e) => {
-          console.log(e);
+          console.log(e)
           toast({
-            description:
-              'Erro ao realizar login, tente novamente.',
+            description: 'Erro ao realizar login, tente novamente.',
             variant: 'destructive',
-          });
-          setIsLoading(false);
-        });
+          })
+          setIsLoading(false)
+        })
     }
   }
 
@@ -143,5 +129,5 @@ export function UserAuthForm({
       </Form>
       <Toaster />
     </div>
-  );
+  )
 }

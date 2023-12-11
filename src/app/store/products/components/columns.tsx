@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import { Product } from '@/types/product';
+import { Product } from '@/types/product'
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table'
 
-import React from 'react';
-import { Dropdown } from './dropdown';
-import { Button } from '@/components/ui/button';
-import { ArrowUpDown } from 'lucide-react';
+import React from 'react'
+import { Dropdown } from './dropdown'
+import { Button } from '@/components/ui/button'
+import { ArrowUpDown } from 'lucide-react'
 
 export function columns({
   setEditFormData,
@@ -20,17 +20,14 @@ export function columns({
       header: ({ column }) => {
         return (
           <Button
+            className="w-44"
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc',
-              )
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             ID
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        );
+        )
       },
     },
     {
@@ -38,24 +35,17 @@ export function columns({
       header: ({ column }) => {
         return (
           <Button
+            className="w-44"
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc',
-              )
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Nome
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        );
+        )
       },
       cell: ({ row }) => {
-        return (
-          <div className="text-start ml-4">
-            {row.getValue('name')}
-          </div>
-        );
+        return <div className="text-start ml-4">{row.getValue('name')}</div>
       },
     },
     {
@@ -63,24 +53,17 @@ export function columns({
       header: ({ column }) => {
         return (
           <Button
+            className="w-56"
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc',
-              )
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Quantidade em estoque
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        );
+        )
       },
       cell: ({ row }) => {
-        return (
-          <div className="text-start ml-24">
-            {row.getValue('inStock')}
-          </div>
-        );
+        return <div className="text-start ml-24">{row.getValue('inStock')}</div>
       },
     },
     {
@@ -88,30 +71,25 @@ export function columns({
       header: ({ column }) => {
         return (
           <Button
+            className="w-44"
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(
-                column.getIsSorted() === 'asc',
-              )
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Preço
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        );
+        )
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start ml-5">
-            {`R$${row.getValue('price')}`}
-          </div>
-        );
+          <div className="text-start ml-5">{`R$${row.getValue('price')}`}</div>
+        )
       },
     },
     {
       id: 'actions',
       cell: ({ row }) => {
-        const product = row.original;
+        const product = row.original
 
         return (
           <Dropdown
@@ -120,8 +98,8 @@ export function columns({
             setTableData={setTableData}
             tableData={tableData}
           />
-        );
+        )
       },
     },
-  ];
+  ]
 }
