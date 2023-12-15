@@ -18,7 +18,6 @@ function useAdmin() {
     customerId,
     customers,
   }: ViewedForAdminProps): Promise<ViewedForAdminResponse> {
-    // validate if admin is admin
     const isAdmin = admin.type === 'admin'
 
     if (!isAdmin || !customerId) {
@@ -30,8 +29,6 @@ function useAdmin() {
     const customer = customers.filter((customer) => customer.id === customerId)
 
     const metrics = customer[0].data
-
-    // customerAlreadyViewedAsAdmin
 
     return {
       isAdmin: true,
