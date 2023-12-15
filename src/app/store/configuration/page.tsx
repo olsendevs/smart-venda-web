@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useContext } from 'react'
 
 import 'dotenv/config'
 import { LoadingSpinner } from '@/components/admin/loading-spinner'
@@ -23,8 +23,18 @@ import {
 import { Switch } from '@/components/ui/switch'
 import Store from './components/store'
 import Integration from './components/integration'
+import { ViewCustomerContext } from '@/contexts/view-customer-context'
+import useAdmin from '@/hooks/admin/useAdmin'
+
+import { customers } from '@/constants/customers'
+import { user as userTemp } from '@/constants/user'
+import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 
 export default function Configurations() {
+  const { isViewingACustomer, customerData, saveCustomer, viewCustomer } =
+    useContext(ViewCustomerContext)
+  const { customerIsViwedAsAdmin } = useAdmin()
+
   const [isLoading, setIsLoading] = React.useState(false)
   const [store, setStore] = React.useState({
     name: undefined,
@@ -39,41 +49,57 @@ export default function Configurations() {
   React.useEffect(() => {
     async function fetchData() {
       setIsLoading(true)
-      try {
-        const user = JSON.parse(localStorage.getItem('user') || '')
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/store/by-user`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.accessToken}`,
-            },
-          },
-        )
-        const responseData = await response.json()
 
-        if (!responseData._id) {
-          const createdStore = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/store`,
+      try {
+        const existingMetricsData = await customerIsViwedAsAdmin({
+          admin: userTemp,
+          customerId: isViewingACustomer
+            ? (customerData?.id as number)
+            : undefined,
+          customers,
+        })
+
+        if (!existingMetricsData.isAdmin) {
+          const user = JSON.parse(localStorage.getItem('user') || '')
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/store/by-user`,
             {
-              method: 'POST',
-              body: JSON.stringify({
-                name: ' ',
-                cnpj: ' ',
-                userId: user.id,
-                payment: {
-                  method: 'confirmation',
-                  apiKey: '',
-                },
-              }),
               headers: {
                 Authorization: `Bearer ${user.accessToken}`,
-                'Content-Type': 'application/json',
               },
             },
           )
-          setStore(await createdStore.json())
-        } else {
-          setStore(responseData)
+          const responseData = await response.json()
+
+          if (!responseData._id) {
+            const createdStore = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/store`,
+              {
+                method: 'POST',
+                body: JSON.stringify({
+                  name: ' ',
+                  cnpj: ' ',
+                  userId: user.id,
+                  payment: {
+                    method: 'confirmation',
+                    apiKey: '',
+                  },
+                }),
+                headers: {
+                  Authorization: `Bearer ${user.accessToken}`,
+                  'Content-Type': 'application/json',
+                },
+              },
+            )
+            setStore(await createdStore.json())
+          } else {
+            setStore(responseData)
+          }
+
+          if (existingMetricsData.metrics && existingMetricsData.customer) {
+            saveCustomer(existingMetricsData.customer)
+            viewCustomer(true)
+          }
         }
       } catch (error) {
         console.error('Error:', error)
@@ -86,12 +112,16 @@ export default function Configurations() {
     fetchData()
   }, [])
   return (
-    <main className="w-full pt-20 flex mm:flex-col md:flex-row w-[55vw] mr-auto ml-auto mm:gap-2 lg:gap-4">
-      <Store storeData={store} setStoreData={setStore} />
+    <main className="w-full pt-20 flex flex-col">
+      {isViewingACustomer ? (
+        <IsViewingACustomer name={customerData?.name as string} />
+      ) : null}
 
-      <Integration storeData={store} setStoreData={setStore} />
-
-      <LoadingSpinner visible={isLoading} />
+      <div className="w-full mt-2 flex mm:flex-col md:flex-row w-[55vw] mr-auto ml-auto mm:gap-2 lg:gap-4">
+        <Store storeData={store} setStoreData={setStore} />
+        <Integration storeData={store} setStoreData={setStore} />
+        <LoadingSpinner visible={isLoading} />
+      </div>
     </main>
   )
 }

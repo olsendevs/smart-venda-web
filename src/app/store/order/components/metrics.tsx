@@ -6,9 +6,10 @@ import {
   CardDescription,
   CardTitle,
 } from '@/components/ui/card'
+import { MetricsProps } from '@/types/metrics'
 import { useEffect, useState } from 'react'
 
-export function Metrics({ data }: any) {
+export function Metrics({ data }: MetricsProps) {
   const [ordersData, setOrdersData] = useState({
     created: 0,
     payed: 0,
@@ -17,15 +18,16 @@ export function Metrics({ data }: any) {
   })
 
   useEffect(() => {
-    const created = data.filter((e: any) => e.status === 'created')
-    const payed = data.filter((e: any) => e.status === 'payed')
-    const onWay = data.filter((e: any) => e.status === 'onWay')
-    const delivered = data.filter((e: any) => e.status === 'delivered')
+    const created = data?.filter((e) => e.status === 'created')
+    const payed = data?.filter((e) => e.status === 'payed')
+    const onWay = data?.filter((e) => e.status === 'onWay')
+    const delivered = data?.filter((e) => e.status === 'delivered')
+
     setOrdersData({
-      created: created.length,
-      payed: payed.length,
-      onway: onWay.length,
-      delivered: delivered.length,
+      created: created?.length,
+      payed: payed?.length,
+      onway: onWay?.length,
+      delivered: delivered?.length,
     })
   }, [data])
   return (

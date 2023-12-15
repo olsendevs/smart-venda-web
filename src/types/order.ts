@@ -13,3 +13,20 @@ export type Order = {
   totalPrice: number
   paymentType: 'mercado_pago' | 'confirmation'
 }
+
+// Temp
+export type AdminProps = {
+  type: string
+  accessToken: string
+}
+
+export type MetricsDataTypes = {
+  _id: number
+  status: string
+}
+
+export type CustomersProps = {
+  id: number
+  name: string
+  data: MetricsDataTypes[]
+}

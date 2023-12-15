@@ -8,6 +8,9 @@ WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
 
+# Environment variable for puppeteer package
+ENV PUPPETEER_SKIP_DOWNLOAD true
+
 # Installing the dependencies
 RUN yarn install --production=false
 

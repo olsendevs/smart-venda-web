@@ -61,29 +61,33 @@ export function CreateUserForm({ tableData, setTableData }: any) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true)
     try {
-      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
+      // const token = JSON.parse(localStorage.getItem('user') || '').accessToken
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/`, {
+      //   method: 'POST',
+      //   body: JSON.stringify(data),
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
 
-      const responseData = await response.json()
+      // const responseData = await response.json()
+
+      const response = {
+        status: 200,
+      }
 
       if (response.status === 500 || response.status === 400) {
         toast({
           title: 'Erro ao adicionar usuário. Tente novamente.',
           variant: 'destructive',
-          description: responseData.message,
+          // description: responseData.message,
         })
         return
       }
 
-      setTableData([...tableData, responseData])
+      setTableData([...tableData, data])
 
       toast({
         title: 'Usuário adicionado com sucesso!',

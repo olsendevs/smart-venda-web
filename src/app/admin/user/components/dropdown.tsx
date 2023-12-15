@@ -12,6 +12,7 @@ import { MoreHorizontal } from 'lucide-react'
 import { useLoading } from '@/components/admin/is-loading'
 import { toast } from '@/components/ui/use-toast'
 import { Toaster } from '@/components/ui/toaster'
+import { useRouter } from 'next/navigation'
 
 export function Dropdown({
   user,
@@ -19,7 +20,13 @@ export function Dropdown({
   tableData,
   setTableData,
 }: any) {
+  const router = useRouter()
+
   const { setIsLoading } = useLoading()
+  function openDashboard() {
+    router.push(`/store/order?customerId=1`)
+  }
+
   async function deleteUser(id: any) {
     setIsLoading(true)
     setEditFormData({
@@ -91,6 +98,9 @@ export function Dropdown({
             Copiar e-mail
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => openDashboard()}>
+            Abrir dashboard
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => editUser(user)}>
             Editar
           </DropdownMenuItem>

@@ -1,11 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export default function Home() {
   const router = useRouter()
   useEffect(() => {
+    // ALERT - disabled until back-end works again
     // const user = JSON.parse(localStorage.getItem('user') || '')
     const user = {
       type: 'user',
