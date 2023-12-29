@@ -18,10 +18,10 @@ export function Metrics({ data }: MetricsProps) {
   })
 
   useEffect(() => {
-    const created = data?.filter((e) => e.status === 'created')
-    const payed = data?.filter((e) => e.status === 'payed')
-    const onWay = data?.filter((e) => e.status === 'onWay')
-    const delivered = data?.filter((e) => e.status === 'delivered')
+    const created = data?.orders?.filter((e) => e.status === 'created')
+    const payed = data?.orders?.filter((e) => e.status === 'payed')
+    const onWay = data?.orders?.filter((e) => e.status === 'onWay')
+    const delivered = data?.orders?.filter((e) => e.status === 'delivered')
 
     setOrdersData({
       created: created?.length,

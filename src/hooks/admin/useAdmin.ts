@@ -1,39 +1,35 @@
-import { AdminProps, CustomersProps, MetricsDataTypes } from '@/types/order'
+import { AdminProps } from '@/types/order'
+import { User } from '@/types/user'
 
 type ViewedForAdminProps = {
   admin: AdminProps
-  customerId?: number
-  customers: CustomersProps[]
 }
 
 type ViewedForAdminResponse = {
   isAdmin: boolean
-  metrics?: MetricsDataTypes[]
-  customer?: CustomersProps
+  userViewedByAdmin?: User
 }
 
 function useAdmin() {
   async function customerIsViwedAsAdmin({
     admin,
-    customerId,
-    customers,
   }: ViewedForAdminProps): Promise<ViewedForAdminResponse> {
     const isAdmin = admin.type === 'admin'
 
-    if (!isAdmin || !customerId) {
+    if (!isAdmin) {
       return {
         isAdmin: false,
       }
     }
 
-    const customer = customers.filter((customer) => customer.id === customerId)
+    const data = localStorage.getItem('@admin:viewed-user')
+    const viewedUserData = JSON.parse(data || '{}')
 
-    const metrics = customer[0].data
+    console.log('viewedUserData', viewedUserData)
 
     return {
       isAdmin: true,
-      metrics,
-      customer: customer[0],
+      userViewedByAdmin: viewedUserData,
     }
   }
 

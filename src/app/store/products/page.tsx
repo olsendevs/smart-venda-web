@@ -9,13 +9,11 @@ import { LoadingSpinner } from '@/components/admin/loading-spinner'
 import { CreateProductForm } from './components/create-product-form'
 import { EditProductForm } from './components/edit-product-form'
 import useAdmin from '@/hooks/admin/useAdmin'
-import { customers } from '@/constants/customers'
-import { user } from '@/constants/user'
 import { ViewCustomerContext } from '@/contexts/view-customer-context'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 
 export default function Product() {
-  const { isViewingACustomer, customerData, saveCustomer, viewCustomer } =
+  const { isViewingACustomer, customerData, viewCustomer } =
     useContext(ViewCustomerContext)
   const { customerIsViwedAsAdmin } = useAdmin()
 
@@ -36,14 +34,11 @@ export default function Product() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const token = user?.accessToken
 
       const existingMetricsData = await customerIsViwedAsAdmin({
         admin: user,
-        customerId: isViewingACustomer
-          ? (customerData?.id as number)
-          : undefined,
-        customers,
       })
 
       try {
@@ -59,10 +54,18 @@ export default function Product() {
           const responseData = await response.json()
 
           setTableData(responseData)
-        }
+        } else if (existingMetricsData.userViewedByAdmin) {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/product/${existingMetricsData.userViewedByAdmin._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          const responseData = await response.json()
 
-        if (existingMetricsData.metrics && existingMetricsData.customer) {
-          saveCustomer(existingMetricsData.customer)
+          setTableData(responseData)
           viewCustomer(true)
         }
       } catch (error) {

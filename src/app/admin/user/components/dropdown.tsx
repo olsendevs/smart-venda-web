@@ -13,18 +13,21 @@ import { useLoading } from '@/components/admin/is-loading'
 import { toast } from '@/components/ui/use-toast'
 import { Toaster } from '@/components/ui/toaster'
 import { useRouter } from 'next/navigation'
+import { DrowndownProps } from '@/types/user'
 
 export function Dropdown({
   user,
   setEditFormData,
   tableData,
   setTableData,
-}: any) {
+}: DrowndownProps) {
+  console.log('user', user)
   const router = useRouter()
 
   const { setIsLoading } = useLoading()
-  function openDashboard() {
-    router.push(`/store/order?customerId=1`)
+  function openDashboard(id: string) {
+    localStorage.setItem('@admin:viewed-user', JSON.stringify(user))
+    router.push(`/store/order?customerId=${id}`)
   }
 
   async function deleteUser(id: any) {
@@ -98,9 +101,11 @@ export function Dropdown({
             Copiar e-mail
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => openDashboard()}>
-            Abrir dashboard
-          </DropdownMenuItem>
+          {user.type === 'store_owner' ? (
+            <DropdownMenuItem onClick={() => openDashboard(user._id)}>
+              Abrir dashboard
+            </DropdownMenuItem>
+          ) : null}
           <DropdownMenuItem onClick={() => editUser(user)}>
             Editar
           </DropdownMenuItem>

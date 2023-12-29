@@ -11,12 +11,10 @@ import { EditOrderForm } from './components/edit-order-form'
 // import { create } from 'domain'
 import { Metrics } from './components/metrics'
 import { useSearchParams } from 'next/navigation'
-import { MetricsDataTypes } from '@/types/order'
 import useAdmin from '@/hooks/admin/useAdmin'
 import { ViewCustomerContext } from '@/contexts/view-customer-context'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
-import { user } from '@/constants/user'
-import { customers } from '@/constants/customers'
+import { MetricsDataProps } from '@/types/metrics'
 
 export default function Order() {
   const { isViewingACustomer, viewCustomer, saveCustomer, customerData } =
@@ -27,7 +25,9 @@ export default function Order() {
   const customerId = searchParams.get('customerId')
 
   const [tableData, setTableData] = React.useState<[]>([])
-  const [metricsData, setMetricsData] = React.useState<MetricsDataTypes[]>([])
+  const [metricsData, setMetricsData] = React.useState<MetricsDataProps | null>(
+    null,
+  )
   const [isLoading, setIsLoading] = React.useState(false)
 
   const [updateData, setUpdateData] = React.useState(new Date())
@@ -43,14 +43,11 @@ export default function Order() {
 
   React.useEffect(() => {
     async function fetchData() {
-      // ALERT - disabled until back-end works again
-      // const user = JSON.parse(localStorage.getItem('user') || '')
+      const user = JSON.parse(localStorage.getItem('user') || '')
       const token = user?.accessToken
 
       const existingMetricsData = await customerIsViwedAsAdmin({
         admin: user,
-        customerId: Number(customerId),
-        customers,
       })
 
       try {
@@ -66,11 +63,27 @@ export default function Order() {
           const responseData = await response.json()
 
           setTableData(responseData)
-        }
+        } else if (existingMetricsData.userViewedByAdmin) {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-orders/${customerId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          const responseData = await response.json()
 
-        if (existingMetricsData.metrics && existingMetricsData.customer) {
-          setMetricsData(existingMetricsData.metrics)
-          saveCustomer(existingMetricsData.customer)
+          console.log('@response-data', responseData)
+
+          const customerData = {
+            _id: existingMetricsData.userViewedByAdmin._id,
+            name: existingMetricsData.userViewedByAdmin.name,
+          }
+
+          setMetricsData(responseData)
+          setTableData(responseData?.orders)
+          saveCustomer(customerData)
           viewCustomer(true)
         }
       } catch (error) {
@@ -94,7 +107,7 @@ export default function Order() {
       <h1 className="pb-2">Pedidos</h1>
 
       {/* tableData */}
-      <Metrics data={metricsData} />
+      <Metrics data={metricsData as MetricsDataProps} />
 
       <DataTable
         columns={columns({

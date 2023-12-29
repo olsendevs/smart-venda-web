@@ -46,7 +46,9 @@ export function columns({
       },
       cell: ({ row }) => {
         return (
-          <div className="text-start ml-4">{row.original?.customerId.name}</div>
+          <div className="text-start ml-4">
+            {row.original?.customerId?.name}
+          </div>
         )
       },
     },

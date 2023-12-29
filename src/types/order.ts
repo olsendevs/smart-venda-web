@@ -26,7 +26,6 @@ export type MetricsDataTypes = {
 }
 
 export type CustomersProps = {
-  id: number
+  _id: string
   name: string
-  data: MetricsDataTypes[]
 }
