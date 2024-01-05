@@ -3,6 +3,7 @@ import { Product } from './product'
 
 export type Order = {
   _id: string
+  name: string
   items: {
     productId: Product
     qtd: number

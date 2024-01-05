@@ -4,30 +4,11 @@ import React, { useContext } from 'react'
 
 import 'dotenv/config'
 import { LoadingSpinner } from '@/components/admin/loading-spinner'
-import { Toaster } from '@/components/ui/toaster'
-import { Button } from '@/components/ui/button'
-import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { Label } from '@/components/ui/label'
-import { useForm } from 'react-hook-form'
-import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from '@/components/ui/card'
-import { Switch } from '@/components/ui/switch'
 import Store from './components/store'
 import Integration from './components/integration'
 import { ViewCustomerContext } from '@/contexts/view-customer-context'
 import useAdmin from '@/hooks/admin/useAdmin'
 
-import { customers } from '@/constants/customers'
-import { user as userTemp } from '@/constants/user'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 
 export default function Configurations() {
@@ -50,22 +31,20 @@ export default function Configurations() {
     async function fetchData() {
       setIsLoading(true)
 
-      try {
-        const existingMetricsData = await customerIsViwedAsAdmin({
-          admin: userTemp,
-          customerId: isViewingACustomer
-            ? (customerData?.id as number)
-            : undefined,
-          customers,
-        })
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const token = user?.accessToken
 
+      const existingMetricsData = await customerIsViwedAsAdmin({
+        admin: user,
+      })
+
+      try {
         if (!existingMetricsData.isAdmin) {
-          const user = JSON.parse(localStorage.getItem('user') || '')
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/store/by-user`,
             {
               headers: {
-                Authorization: `Bearer ${user.accessToken}`,
+                Authorization: `Bearer ${token}`,
               },
             },
           )
@@ -91,15 +70,33 @@ export default function Configurations() {
                 },
               },
             )
+
             setStore(await createdStore.json())
           } else {
             setStore(responseData)
           }
+        } else if (
+          existingMetricsData.isAdmin &&
+          existingMetricsData.userViewedByAdmin
+        ) {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-user-store-info/${existingMetricsData?.userViewedByAdmin?._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          const responseData = await response.json()
 
-          if (existingMetricsData.metrics && existingMetricsData.customer) {
-            saveCustomer(existingMetricsData.customer)
-            viewCustomer(true)
+          const customerData = {
+            _id: existingMetricsData.userViewedByAdmin._id,
+            name: existingMetricsData.userViewedByAdmin.name,
           }
+
+          setStore(responseData)
+          saveCustomer(customerData)
+          viewCustomer(true)
         }
       } catch (error) {
         console.error('Error:', error)

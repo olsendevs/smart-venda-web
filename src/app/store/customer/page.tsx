@@ -8,8 +8,6 @@ import 'dotenv/config'
 import { LoadingSpinner } from '@/components/admin/loading-spinner'
 import { CreateCustomerForm } from './components/create-customer-form'
 import { EditCustomerForm } from './components/edit-customer-form'
-import { customers } from '@/constants/customers'
-import { user } from '@/constants/user'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 import { ViewCustomerContext } from '@/contexts/view-customer-context'
 import useAdmin from '@/hooks/admin/useAdmin'
@@ -33,14 +31,11 @@ export default function Customer() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const token = JSON.parse(localStorage.getItem('user') || '').accessToken
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const token = user?.accessToken
 
       const existingMetricsData = await customerIsViwedAsAdmin({
         admin: user,
-        customerId: isViewingACustomer
-          ? (customerData?.id as number)
-          : undefined,
-        customers,
       })
 
       try {
@@ -56,11 +51,28 @@ export default function Customer() {
           const responseData = await response.json()
 
           setTableData(responseData)
-        }
+        } else if (
+          existingMetricsData.isAdmin &&
+          existingMetricsData.userViewedByAdmin
+        ) {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-clients/${existingMetricsData?.userViewedByAdmin._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          )
+          const responseData = await response.json()
 
-        if (existingMetricsData.metrics && existingMetricsData.customer) {
-          saveCustomer(existingMetricsData.customer)
+          const customerData = {
+            _id: existingMetricsData.userViewedByAdmin._id,
+            name: existingMetricsData.userViewedByAdmin.name,
+          }
+
+          saveCustomer(customerData)
           viewCustomer(true)
+          setTableData(responseData?.customers)
         }
       } catch (error) {
         console.error('Error:', error)

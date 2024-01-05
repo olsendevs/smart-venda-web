@@ -65,7 +65,9 @@ export default function Order() {
           setTableData(responseData)
         } else if (existingMetricsData.userViewedByAdmin) {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-orders/${customerId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-orders/${
+              customerId ?? existingMetricsData?.userViewedByAdmin._id
+            }`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -73,8 +75,6 @@ export default function Order() {
             },
           )
           const responseData = await response.json()
-
-          console.log('@response-data', responseData)
 
           const customerData = {
             _id: existingMetricsData.userViewedByAdmin._id,

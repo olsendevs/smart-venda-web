@@ -13,7 +13,7 @@ import { ViewCustomerContext } from '@/contexts/view-customer-context'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 
 export default function Product() {
-  const { isViewingACustomer, customerData, viewCustomer } =
+  const { isViewingACustomer, customerData, viewCustomer, saveCustomer } =
     useContext(ViewCustomerContext)
   const { customerIsViwedAsAdmin } = useAdmin()
 
@@ -56,7 +56,7 @@ export default function Product() {
           setTableData(responseData)
         } else if (existingMetricsData.userViewedByAdmin) {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/product/${existingMetricsData.userViewedByAdmin._id}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/find-products/${existingMetricsData.userViewedByAdmin._id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -64,6 +64,13 @@ export default function Product() {
             },
           )
           const responseData = await response.json()
+
+          const customerData = {
+            _id: existingMetricsData.userViewedByAdmin._id,
+            name: existingMetricsData.userViewedByAdmin.name,
+          }
+
+          saveCustomer(customerData)
 
           setTableData(responseData)
           viewCustomer(true)

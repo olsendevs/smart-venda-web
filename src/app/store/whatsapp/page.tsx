@@ -6,8 +6,6 @@ import { MdSignalWifi3BarLock } from 'react-icons/md'
 import IsViewingACustomer from '@/components/store/is-viewing-a-customer'
 import useAdmin from '@/hooks/admin/useAdmin'
 import { ViewCustomerContext } from '@/contexts/view-customer-context'
-import { customers } from '@/constants/customers'
-import { user } from '@/constants/user'
 
 export default function User() {
   const { isViewingACustomer, customerData, saveCustomer, viewCustomer } =
@@ -22,17 +20,20 @@ export default function User() {
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const existingMetricsData = await customerIsViwedAsAdmin({
-          admin: user,
-          customerId: isViewingACustomer
-            ? (customerData?.id as number)
-            : undefined,
-          customers,
-        })
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const token = user?.accessToken
 
-        if (existingMetricsData.metrics && existingMetricsData.customer) {
-          saveCustomer(existingMetricsData.customer)
+      const existingMetricsData = await customerIsViwedAsAdmin({
+        admin: user,
+      })
+      try {
+        if (existingMetricsData.userViewedByAdmin) {
+          const customerData = {
+            _id: existingMetricsData.userViewedByAdmin._id,
+            name: existingMetricsData.userViewedByAdmin.name,
+          }
+
+          saveCustomer(customerData)
           viewCustomer(true)
         }
       } catch (error) {

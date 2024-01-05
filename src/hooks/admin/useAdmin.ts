@@ -22,10 +22,9 @@ function useAdmin() {
       }
     }
 
-    const data = localStorage.getItem('@admin:viewed-user')
-    const viewedUserData = JSON.parse(data || '{}')
-
-    console.log('viewedUserData', viewedUserData)
+    const viewedUserData = JSON.parse(
+      localStorage.getItem('@admin:viewed-user') || '',
+    )
 
     return {
       isAdmin: true,

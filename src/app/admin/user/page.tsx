@@ -23,6 +23,14 @@ export default function User() {
 
   React.useEffect(() => {
     async function fetchData() {
+      const cacheViewedUser = JSON.parse(
+        localStorage.getItem('@admin:viewed-user') || '{}',
+      )
+
+      if (cacheViewedUser) {
+        localStorage.removeItem('@admin:viewed-user')
+      }
+
       try {
         const token = JSON.parse(localStorage.getItem('user') || '').accessToken
         const response = await fetch(

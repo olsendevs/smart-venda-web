@@ -25,14 +25,14 @@ export default function IsViewingACustomer({ name }: IsViewingACustomerProps) {
 
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="flex items-center gap-4 w-max h-10 rounded-3xl pl-4 pr-2 py-1 mb-4 bg-red-700">
-        <span>
+      <div className="flex items-center gap-4 w-max h-10 rounded-3xl pl-4 pr-2 py-1 mb-4 bg-red-700 mm:pl-3">
+        <span className="text-base mm:text-[11px]">
           {isLoading
             ? 'Encerrando visualização'
             : `Você está visualizando o cliente ${name}`}
         </span>
         <button
-          className="rounded-full bg-red-800 px-4 ml-1 h-full text-sm"
+          className="rounded-full bg-red-800 px-4 ml-1 h-full text-sm mm:text-[12px]"
           onClick={endOfViewing}
         >
           Sair

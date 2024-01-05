@@ -21,7 +21,6 @@ export function Dropdown({
   tableData,
   setTableData,
 }: DrowndownProps) {
-  console.log('user', user)
   const router = useRouter()
 
   const { setIsLoading } = useLoading()
